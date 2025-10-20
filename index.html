@@ -1689,14 +1689,6 @@
             }
         }
 
-        // Rastgele renk üretme fonksiyonu
-        function getRandomColor(opacity = 1) {
-            const r = Math.floor(Math.random() * 256);
-            const g = Math.floor(Math.random() * 256);
-            const b = Math.floor(Math.random() * 256);
-            return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-        }
-
         // Uygulama durumu
         const state = {
             cards: [],
@@ -1949,13 +1941,13 @@
             document.getElementById('realReturnRate').textContent = realReturnRate.toFixed(2) + '%';
             document.getElementById('purchasingPower').textContent = realReturnRate.toFixed(2) + '%';
             
-            // Grafikleri oluştur
+            // Grafikleri oluştur - DÜZELTME: 3. sütunda her zaman reel getiri gösterilecek
             createReturnChart(initialPrice, finalPrice, realReturn, stopajToggle, stopajTutari, netGetiri);
             
             debugLog(`Getiri hesaplandı: Nominal Getiri: ${nominalReturn.toFixed(2)} TL, Reel Getiri: ${realReturn.toFixed(2)} TL`);
         }
 
-        // Getiri grafiğini oluştur - DÜZELTİLMİŞ STACKED BAR CHART
+        // Getiri grafiğini oluştur - DÜZELTİLMİŞ: 3. sütunda her zaman reel getiri gösterilecek
         function createReturnChart(initialPrice, finalPrice, realReturn, stopajToggle, stopajTutari, netGetiri) {
             debugLog('Getiri grafiği oluşturuluyor...');
             
@@ -1970,7 +1962,7 @@
             // Legend'ı temizle
             legendContainer.innerHTML = '';
 
-            // Rastgele renkler oluştur
+            // Renkler
             const initialColor = '#3498db';
             const finalColor = '#2ecc71';
             const positiveReturnColor = '#f39c12';
@@ -1981,11 +1973,12 @@
             const totalWithReturn = initialPrice + realReturn;
 
             // Veri setlerini hazırla - STACKED YAPISI
+            // DÜZELTME: 3. sütunda her zaman reel getiri gösterilecek
             let datasets = [];
             let labels = ['İlk Fiyat', 'Son Fiyat', 'As Kazanç'];
 
-            if (stopajToggle) {
-                // STOPAJLI DURUM - 3. sütun: İlk Fiyat + Net Getiri (STACKED)
+            if (stopajToggle && isPositiveReturn) {
+                // STOPAJLI VE POZİTİF REEL GETİRİ DURUMU
                 datasets = [
                     // İlk Fiyat sütunu
                     {
@@ -2003,10 +1996,10 @@
                         borderColor: finalColor,
                         borderWidth: 2
                     },
-                    // 3. sütun: Net Getiri (STACKED - İlk Fiyat'ın üstüne ekleniyor)
+                    // 3. sütun: Reel Getiri (STACKED - İlk Fiyat'ın üstüne ekleniyor)
                     {
-                        label: 'Net Getiri (Stopaj Sonrası)',
-                        data: [0, 0, netGetiri],
+                        label: 'Reel Getiri (Stopaj Sonrası)',
+                        data: [0, 0, realReturn],
                         backgroundColor: positiveReturnColor,
                         borderColor: positiveReturnColor,
                         borderWidth: 2
@@ -2025,18 +2018,18 @@
                     </div>
                     <div class="stacked-legend-item">
                         <div style="width: 15px; height: 15px; background-color: ${positiveReturnColor}; border-radius: 3px;"></div>
-                        <span>Net Getiri: ${formatCurrency(netGetiri)}</span>
+                        <span>Reel Getiri: ${formatCurrency(realReturn)}</span>
                     </div>
                     <div class="stacked-legend-item">
                         <div style="width: 15px; height: 15px; background-color: ${stopajColor}; border-radius: 3px;"></div>
                         <span>Stopaj Kesintisi: ${formatCurrency(stopajTutari)}</span>
                     </div>
                     <div class="stacked-legend-item" style="background-color: #e8f5e8;">
-                        <strong>As Kazanç (İlk Fiyat + Net Getiri): ${formatCurrency(initialPrice + netGetiri)}</strong>
+                        <strong>As Kazanç (İlk Fiyat + Reel Getiri): ${formatCurrency(totalWithReturn)}</strong>
                     </div>
                 `;
-            } else if (isPositiveReturn) {
-                // POZİTİF REEL GETİRİ - 3. sütun: İlk Fiyat + Reel Getiri (STACKED)
+            } else if (!stopajToggle && isPositiveReturn) {
+                // STOPAJSIZ POZİTİF REEL GETİRİ
                 datasets = [
                     // İlk Fiyat sütunu
                     {
@@ -2083,7 +2076,7 @@
                     </div>
                 `;
             } else {
-                // NEGATİF REEL GETİRİ - 3. sütun: İlk Fiyat - Kayıp (STACKED)
+                // NEGATİF REEL GETİRİ DURUMU (Hem stopajlı hem stopajsız)
                 const lossAmount = Math.abs(realReturn);
                 const netValue = initialPrice - lossAmount;
                 
@@ -2115,7 +2108,7 @@
                 ];
 
                 // Legend için negatif getiri bilgisi
-                legendContainer.innerHTML = `
+                let legendHTML = `
                     <div class="stacked-legend-item">
                         <div style="width: 15px; height: 15px; background-color: ${initialColor}; border-radius: 3px;"></div>
                         <span>İlk Fiyat: ${formatCurrency(initialPrice)}</span>
@@ -2128,10 +2121,24 @@
                         <div style="width: 15px; height: 15px; background-color: ${negativeReturnColor}; border-radius: 3px;"></div>
                         <span>Reel Getiri Kaybı: ${formatCurrency(lossAmount)}</span>
                     </div>
+                `;
+                
+                if (stopajToggle) {
+                    legendHTML += `
+                        <div class="stacked-legend-item">
+                            <div style="width: 15px; height: 15px; background-color: ${stopajColor}; border-radius: 3px;"></div>
+                            <span>Stopaj Kesintisi: ${formatCurrency(stopajTutari)}</span>
+                        </div>
+                    `;
+                }
+                
+                legendHTML += `
                     <div class="stacked-legend-item" style="background-color: #ffeaea;">
                         <strong>As Kazanç (Net): ${formatCurrency(netValue)}</strong>
                     </div>
                 `;
+                
+                legendContainer.innerHTML = legendHTML;
             }
 
             window.returnChartInstance = new Chart(ctx, {
@@ -2146,7 +2153,7 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            stacked: true, // Y ekseninde stacked aktif
+                            stacked: true,
                             ticks: {
                                 callback: function(value) {
                                     return formatCurrency(value);
@@ -2158,7 +2165,7 @@
                             }
                         },
                         x: {
-                            stacked: true, // X ekseninde de stacked aktif
+                            stacked: true,
                             title: {
                                 display: true,
                                 text: 'Değerler'
@@ -2174,7 +2181,7 @@
                             }
                         },
                         legend: {
-                            display: false // Legend'ı manuel olarak gösteriyoruz
+                            display: false
                         }
                     }
                 }
