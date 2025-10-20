@@ -793,6 +793,64 @@
             border-radius: var(--border-radius);
             border-left: 4px solid var(--secondary-color);
         }
+
+        /* Yeni Getiri Hesaplama Stilleri */
+        .period-selector {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .period-select {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+        
+        .period-input {
+            flex: 1;
+        }
+        
+        .enag-info {
+            font-size: 0.8rem;
+            color: #e74c3c;
+            margin-top: 5px;
+        }
+        
+        .inflation-info {
+            font-size: 0.8rem;
+            color: #3498db;
+            margin-top: 5px;
+        }
+        
+        /* Getiri Grafikleri */
+        .return-charts {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .chart-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .chart-title {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #444;
+            font-size: 1.2rem;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
     </style>
 </head>
 <body>
@@ -916,18 +974,32 @@
                     <div class="calculator-grid">
                         <div class="calculator-inputs">
                             <div class="form-group">
-                                <label for="investmentAmount">Yatırım Tutarı (TL)</label>
-                                <input type="number" id="investmentAmount" class="form-control" value="10000" min="1">
+                                <label for="initialPrice">İlk Fiyat (TL)</label>
+                                <input type="number" id="initialPrice" class="form-control" value="1000" min="0" step="0.01">
                             </div>
                             
                             <div class="form-group">
-                                <label for="investmentPeriod">Yatırım Süresi (Ay)</label>
-                                <input type="number" id="investmentPeriod" class="form-control" value="12" min="1">
+                                <label for="finalPrice">Son Fiyat (TL)</label>
+                                <input type="number" id="finalPrice" class="form-control" value="1500" min="0" step="0.01">
                             </div>
                             
                             <div class="form-group">
-                                <label for="annualReturn">Yıllık Getiri Oranı (%)</label>
-                                <input type="number" id="annualReturn" class="form-control" value="15" step="0.1" min="0">
+                                <label for="periodValue">Zaman Periyodu</label>
+                                <div class="period-selector">
+                                    <input type="number" id="periodValue" class="form-control period-input" value="1" min="1">
+                                    <select id="periodType" class="period-select">
+                                        <option value="daily">Günlük</option>
+                                        <option value="monthly" selected>Aylık</option>
+                                        <option value="yearly">Yıllık</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inflationRate">Enflasyon Oranı (%)</label>
+                                <input type="number" id="inflationRate" class="form-control" value="3.79" step="0.01">
+                                <div class="enag-info">ENAG Enflasyonu: %3.79 (Eylül 2025)</div>
+                                <div class="inflation-info" id="periodInflationInfo">Aylık Enflasyon: %3.79</div>
                             </div>
                             
                             <button class="btn btn-success" id="calculateReturnBtn" style="width: 100%;">
@@ -939,30 +1011,45 @@
                             <h4>Hesaplama Sonuçları</h4>
                             
                             <div class="result-item">
-                                <span class="result-label">Toplam Yatırım:</span>
-                                <span class="result-value" id="totalInvestment">10.000 TL</span>
+                                <span class="result-label">Nominal Getiri:</span>
+                                <span class="result-value" id="nominalReturn">500 TL</span>
                             </div>
                             
                             <div class="result-item">
-                                <span class="result-label">Toplam Getiri:</span>
-                                <span class="result-value" id="totalReturn">1.500 TL</span>
+                                <span class="result-label">Nominal Getiri Oranı:</span>
+                                <span class="result-value" id="nominalReturnRate">50.00%</span>
                             </div>
                             
                             <div class="result-item">
-                                <span class="result-label">Net Kar:</span>
-                                <span class="result-value" id="netProfit">1.500 TL</span>
+                                <span class="result-label">Yıllık Getiri Oranı:</span>
+                                <span class="result-value" id="annualReturnRate">50.00%</span>
                             </div>
                             
                             <div class="result-highlight">
                                 <div class="result-item">
-                                    <span class="result-label">Toplam Varlık:</span>
-                                    <span class="result-value" id="totalAsset">11.500 TL</span>
+                                    <span class="result-label">Reel Getiri (Enflasyondan Arındırılmış):</span>
+                                    <span class="result-value" id="realReturn">442.10 TL</span>
                                 </div>
                             </div>
                             
                             <div class="result-item">
-                                <span class="result-label">Aylık Ortalama Getiri:</span>
-                                <span class="result-value" id="monthlyReturn">125 TL</span>
+                                <span class="result-label">Reel Getiri Oranı:</span>
+                                <span class="result-value" id="realReturnRate">44.21%</span>
+                            </div>
+                            
+                            <div class="result-item">
+                                <span class="result-label">Satın Alma Gücü Artışı:</span>
+                                <span class="result-value" id="purchasingPower">44.21%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Getiri Grafikleri -->
+                    <div class="return-charts">
+                        <div class="chart-container">
+                            <h3 class="chart-title">Getiri Karşılaştırması</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="returnChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -1303,6 +1390,361 @@
             debugLog('Event listenerlar kuruldu');
         }
 
+        // Getiri Hesaplama fonksiyonlarını kur
+        function setupInvestmentCalculator() {
+            // Getiri hesaplama butonu
+            const calculateReturnBtn = document.getElementById('calculateReturnBtn');
+            calculateReturnBtn.addEventListener('click', calculateInvestmentReturn);
+            
+            // Zaman periyodu değişikliği
+            document.getElementById('periodType').addEventListener('change', updateInflationRate);
+            document.getElementById('periodValue').addEventListener('input', updateInflationRate);
+            
+            // İlk hesaplamayı yap
+            updateInflationRate();
+            calculateInvestmentReturn();
+            
+            debugLog('Getiri hesaplama fonksiyonları kuruldu');
+        }
+
+        // Enflasyon oranını güncelle
+        function updateInflationRate() {
+            const periodType = document.getElementById('periodType').value;
+            const periodValue = parseFloat(document.getElementById('periodValue').value);
+            const monthlyInflation = 3.79; // ENAG Eylül 2025 aylık enflasyonu
+            
+            let periodInflation, inflationInfo;
+            
+            switch(periodType) {
+                case 'daily':
+                    // Günlük enflasyon = Aylık enflasyon / 30
+                    periodInflation = monthlyInflation / 30;
+                    inflationInfo = `Günlük Enflasyon: ${periodInflation.toFixed(2)}%`;
+                    break;
+                case 'monthly':
+                    // Aylık enflasyon = ENAG aylık enflasyonu
+                    periodInflation = monthlyInflation;
+                    inflationInfo = `Aylık Enflasyon: ${periodInflation.toFixed(2)}%`;
+                    break;
+                case 'yearly':
+                    // Yıllık enflasyon = Aylık enflasyon * 12
+                    periodInflation = monthlyInflation * 12;
+                    inflationInfo = `Yıllık Enflasyon: ${periodInflation.toFixed(2)}%`;
+                    break;
+            }
+            
+            // Dönem enflasyonunu hesapla (bileşik)
+            const periodTotalInflation = periodInflation * periodValue;
+            
+            document.getElementById('inflationRate').value = periodTotalInflation.toFixed(2);
+            document.getElementById('periodInflationInfo').textContent = inflationInfo;
+            
+            debugLog(`Enflasyon oranı güncellendi: ${periodType} - ${periodTotalInflation.toFixed(2)}%`);
+        }
+
+        // Getiri hesapla
+        function calculateInvestmentReturn() {
+            debugLog('Getiri hesaplama başlatıldı');
+            
+            const initialPrice = parseFloat(document.getElementById('initialPrice').value);
+            const finalPrice = parseFloat(document.getElementById('finalPrice').value);
+            const periodValue = parseFloat(document.getElementById('periodValue').value);
+            const periodType = document.getElementById('periodType').value;
+            const inflationRate = parseFloat(document.getElementById('inflationRate').value) / 100;
+            
+            if (isNaN(initialPrice) || isNaN(finalPrice) || isNaN(periodValue) || isNaN(inflationRate)) {
+                alert('Lütfen tüm alanları doğru şekilde doldurun.');
+                return;
+            }
+            
+            if (initialPrice <= 0) {
+                alert('İlk fiyat 0\'dan büyük olmalıdır.');
+                return;
+            }
+            
+            // Nominal getiri hesaplama
+            const nominalReturn = finalPrice - initialPrice;
+            const nominalReturnRate = (nominalReturn / initialPrice) * 100;
+            
+            // Yıllık getiri oranı hesaplama
+            let annualReturnRate;
+            switch(periodType) {
+                case 'daily':
+                    // Günlük getiriyi yıllığa çevir
+                    annualReturnRate = nominalReturnRate * 365 / periodValue;
+                    break;
+                case 'monthly':
+                    // Aylık getiriyi yıllığa çevir
+                    annualReturnRate = nominalReturnRate * 12 / periodValue;
+                    break;
+                case 'yearly':
+                    // Yıllık getiri
+                    annualReturnRate = nominalReturnRate;
+                    break;
+            }
+            
+            // Reel getiri hesaplama (enflasyondan arındırılmış)
+            // Basit yaklaşım: nominal getiri - enflasyon
+            const realReturnRate = nominalReturnRate - (inflationRate * 100);
+            const realReturn = initialPrice * (realReturnRate / 100);
+            
+            // Sonuçları göster
+            document.getElementById('nominalReturn').textContent = formatCurrency(nominalReturn);
+            document.getElementById('nominalReturnRate').textContent = nominalReturnRate.toFixed(2) + '%';
+            document.getElementById('annualReturnRate').textContent = annualReturnRate.toFixed(2) + '%';
+            document.getElementById('realReturn').textContent = formatCurrency(realReturn);
+            document.getElementById('realReturnRate').textContent = realReturnRate.toFixed(2) + '%';
+            document.getElementById('purchasingPower').textContent = realReturnRate.toFixed(2) + '%';
+            
+            // Grafikleri oluştur
+            createReturnChart(initialPrice, finalPrice, realReturn);
+            
+            debugLog(`Getiri hesaplandı: Nominal Getiri: ${nominalReturn.toFixed(2)} TL, Reel Getiri: ${realReturn.toFixed(2)} TL`);
+        }
+
+        // Getiri grafiğini oluştur
+        function createReturnChart(initialPrice, finalPrice, realReturn) {
+            debugLog('Getiri grafiği oluşturuluyor...');
+            
+            const ctx = document.getElementById('returnChart').getContext('2d');
+            
+            // Önceki grafik varsa destroy et
+            if (window.returnChartInstance) {
+                window.returnChartInstance.destroy();
+            }
+            
+            window.returnChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['İlk Fiyat', 'Son Fiyat', 'İlk Fiyat + Reel Getiri'],
+                    datasets: [
+                        {
+                            label: 'İlk Fiyat',
+                            data: [initialPrice, 0, initialPrice],
+                            backgroundColor: 'rgba(52, 152, 219, 0.8)',
+                            borderColor: 'rgba(52, 152, 219, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Reel Getiri',
+                            data: [0, 0, realReturn],
+                            backgroundColor: realReturn >= 0 ? 
+                                'rgba(46, 204, 113, 0.8)' :   // Pozitif getiri - Yeşil
+                                'rgba(231, 76, 60, 0.8)',     // Negatif getiri - Kırmızı
+                            borderColor: realReturn >= 0 ? 
+                                'rgba(46, 204, 113, 1)' : 
+                                'rgba(231, 76, 60, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Son Fiyat',
+                            data: [0, finalPrice, 0],
+                            backgroundColor: 'rgba(155, 89, 182, 0.8)',
+                            borderColor: 'rgba(155, 89, 182, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Tutar (TL)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Değerler'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${formatCurrency(context.raw)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            debugLog('Getiri grafiği oluşturuldu');
+        }
+
+        // Para formatı
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('tr-TR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount) + ' TL';
+        }
+
+        // Tool seçimini ayarla
+        function setupToolSelection() {
+            const toolItems = document.querySelectorAll('.tool-item');
+            toolItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const tool = this.dataset.tool;
+                    switchTool(tool);
+                    
+                    // Aktif tool'u vurgula
+                    toolItems.forEach(toolItem => {
+                        toolItem.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        // Tool değiştir
+        function switchTool(tool) {
+            debugLog(`Tool değiştiriliyor: ${tool}`);
+            
+            // Tüm tool section'ları gizle
+            document.querySelectorAll('.tool-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Seçili tool'u göster
+            const targetSection = document.getElementById(`${tool}-section`);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            state.currentTool = tool;
+            
+            // Enflasyon tool'una geçildiğinde grafiği yeniden render et
+            if (tool === 'inflation') {
+                setTimeout(() => {
+                    renderInflationChart();
+                }, 100);
+            }
+            
+            debugLog(`Aktif tool: ${tool}`);
+        }
+
+        // Hızlı işlem butonlarını ayarla
+        function setupQuickActions() {
+            const quickActionBtns = document.querySelectorAll('.quick-action-btn');
+            quickActionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const amount = parseFloat(this.dataset.amount);
+                    document.getElementById('expenseAmount').value = amount;
+                    debugLog(`Hızlı işlem: ${amount} TL seçildi`);
+                });
+            });
+        }
+
+        // Enflasyon grafiğini render et
+        function renderInflationChart() {
+            debugLog('Enflasyon grafiği oluşturuluyor...');
+            
+            const ctx = document.getElementById('inflationChart').getContext('2d');
+            
+            // Eğer önceki chart varsa destroy et
+            if (window.inflationChartInstance) {
+                window.inflationChartInstance.destroy();
+            }
+            
+            window.inflationChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: inflationData.months,
+                    datasets: [
+                        {
+                            label: 'TÜİK',
+                            data: inflationData.tuk,
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'İTO',
+                            data: inflationData.ito,
+                            borderColor: '#2ecc71',
+                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'ENAG',
+                            data: inflationData.enag,
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '2025 Yılı Aylık Enflasyon Karşılaştırması',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: %${context.parsed.y.toFixed(2)}`;
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Enflasyon Oranı (%)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return '%' + value;
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Aylar'
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'nearest'
+                    }
+                }
+            });
+            
+            debugLog('Enflasyon grafiği oluşturuldu');
+        }
+
         // Kart ekleme modal'ını aç
         function openAddCardModal() {
             debugLog('Kart ekleme modalı açılıyor');
@@ -1588,206 +2030,6 @@
                 updateUI();
                 debugLog(`Harcama silindi: ${expenseId}`);
             }
-        }
-
-        // Getiri Hesaplama fonksiyonlarını kur
-        function setupInvestmentCalculator() {
-            // Getiri hesaplama butonu
-            document.getElementById('calculateReturnBtn').addEventListener('click', calculateInvestmentReturn);
-            
-            // İlk hesaplamayı yap
-            calculateInvestmentReturn();
-        }
-
-        // Getiri hesapla
-        function calculateInvestmentReturn() {
-            const amount = parseFloat(document.getElementById('investmentAmount').value);
-            const period = parseFloat(document.getElementById('investmentPeriod').value);
-            const annualReturn = parseFloat(document.getElementById('annualReturn').value);
-            
-            if (isNaN(amount) || isNaN(period) || isNaN(annualReturn)) {
-                alert('Lütfen tüm alanları doğru şekilde doldurun.');
-                return;
-            }
-            
-            // Aylık getiri oranı
-            const monthlyReturnRate = annualReturn / 100 / 12;
-            
-            // Toplam getiri (bileşik faiz)
-            const totalReturn = amount * Math.pow(1 + monthlyReturnRate, period) - amount;
-            const totalAsset = amount + totalReturn;
-            const monthlyReturn = totalReturn / period;
-            
-            // Sonuçları göster
-            document.getElementById('totalInvestment').textContent = formatCurrency(amount);
-            document.getElementById('totalReturn').textContent = formatCurrency(totalReturn);
-            document.getElementById('netProfit').textContent = formatCurrency(totalReturn);
-            document.getElementById('totalAsset').textContent = formatCurrency(totalAsset);
-            document.getElementById('monthlyReturn').textContent = formatCurrency(monthlyReturn);
-            
-            debugLog(`Getiri hesaplandı: Toplam Getiri: ${totalReturn.toFixed(2)} TL`);
-        }
-
-        // Para formatı
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('tr-TR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }).format(amount) + ' TL';
-        }
-
-        // Tool seçimini ayarla
-        function setupToolSelection() {
-            const toolItems = document.querySelectorAll('.tool-item');
-            toolItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const tool = this.dataset.tool;
-                    switchTool(tool);
-                    
-                    // Aktif tool'u vurgula
-                    toolItems.forEach(toolItem => {
-                        toolItem.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
-            });
-        }
-
-        // Tool değiştir
-        function switchTool(tool) {
-            debugLog(`Tool değiştiriliyor: ${tool}`);
-            
-            // Tüm tool section'ları gizle
-            document.querySelectorAll('.tool-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Seçili tool'u göster
-            const targetSection = document.getElementById(`${tool}-section`);
-            if (targetSection) {
-                targetSection.classList.add('active');
-            }
-            
-            state.currentTool = tool;
-            
-            // Enflasyon tool'una geçildiğinde grafiği yeniden render et
-            if (tool === 'inflation') {
-                setTimeout(() => {
-                    renderInflationChart();
-                }, 100);
-            }
-            
-            debugLog(`Aktif tool: ${tool}`);
-        }
-
-        // Hızlı işlem butonlarını ayarla
-        function setupQuickActions() {
-            const quickActionBtns = document.querySelectorAll('.quick-action-btn');
-            quickActionBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const amount = parseFloat(this.dataset.amount);
-                    document.getElementById('expenseAmount').value = amount;
-                    debugLog(`Hızlı işlem: ${amount} TL seçildi`);
-                });
-            });
-        }
-
-        // Enflasyon grafiğini render et
-        function renderInflationChart() {
-            debugLog('Enflasyon grafiği oluşturuluyor...');
-            
-            const ctx = document.getElementById('inflationChart').getContext('2d');
-            
-            // Eğer önceki chart varsa destroy et
-            if (window.inflationChartInstance) {
-                window.inflationChartInstance.destroy();
-            }
-            
-            window.inflationChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: inflationData.months,
-                    datasets: [
-                        {
-                            label: 'TÜİK',
-                            data: inflationData.tuk,
-                            borderColor: '#3498db',
-                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                            borderWidth: 3,
-                            fill: false,
-                            tension: 0.4
-                        },
-                        {
-                            label: 'İTO',
-                            data: inflationData.ito,
-                            borderColor: '#2ecc71',
-                            backgroundColor: 'rgba(46, 204, 113, 0.1)',
-                            borderWidth: 3,
-                            fill: false,
-                            tension: 0.4
-                        },
-                        {
-                            label: 'ENAG',
-                            data: inflationData.enag,
-                            borderColor: '#e74c3c',
-                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                            borderWidth: 3,
-                            fill: false,
-                            tension: 0.4
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: '2025 Yılı Aylık Enflasyon Karşılaştırması',
-                            font: {
-                                size: 16
-                            }
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.dataset.label}: %${context.parsed.y.toFixed(2)}`;
-                                }
-                            }
-                        },
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Enflasyon Oranı (%)'
-                            },
-                            ticks: {
-                                callback: function(value) {
-                                    return '%' + value;
-                                }
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Aylar'
-                            }
-                        }
-                    },
-                    interaction: {
-                        intersect: false,
-                        mode: 'nearest'
-                    }
-                }
-            });
-            
-            debugLog('Enflasyon grafiği oluşturuldu');
         }
     </script>
 </body>
