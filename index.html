@@ -70,78 +70,6 @@
             color: var(--primary-color);
         }
         
-        .add-card-btn {
-            background: linear-gradient(135deg, var(--primary-color) 0%, #2980b9 100%);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .add-card-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-        
-        .card-list {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-        
-        .card-item {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-            border-radius: var(--border-radius);
-            padding: 15px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            padding-right: 40px;
-            border-left: 4px solid transparent;
-        }
-        
-        .card-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
-        }
-        
-        .card-item.active {
-            background: rgba(52, 152, 219, 0.2);
-            border-left: 4px solid var(--primary-color);
-        }
-        
-        .card-delete-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.6);
-            cursor: pointer;
-            font-size: 1rem;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-        
-        .card-delete-btn:hover {
-            background-color: var(--danger-color);
-            color: white;
-            transform: scale(1.1);
-        }
-        
         .finance-tools {
             margin-top: 30px;
         }
@@ -1126,6 +1054,327 @@
             border-left: 4px solid var(--secondary-color);
         }
 
+        /* Aylık Bütçe Sayfası için Yeni Stiller */
+        .budget-container {
+            display: flex;
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .budget-column {
+            flex: 1;
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .budget-column.income {
+            border-top: 4px solid var(--secondary-color);
+        }
+        
+        .budget-column.expense {
+            border-top: 4px solid var(--danger-color);
+        }
+        
+        .budget-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .budget-header h3 {
+            font-size: 1.4rem;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .budget-total {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: var(--border-radius);
+        }
+        
+        .income-total {
+            background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+            color: var(--secondary-color);
+        }
+        
+        .expense-total {
+            background: linear-gradient(135deg, #ffeaea 0%, #f8d7da 100%);
+            color: var(--danger-color);
+        }
+        
+        .budget-items {
+            min-height: 200px;
+            margin-bottom: 25px;
+        }
+        
+        .budget-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+        }
+        
+        .income-item {
+            border-left-color: var(--secondary-color);
+        }
+        
+        .expense-item {
+            border-left-color: var(--danger-color);
+        }
+        
+        .budget-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item-content {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+        
+        .item-amount {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .income-amount {
+            color: var(--secondary-color);
+        }
+        
+        .expense-amount {
+            color: var(--danger-color);
+        }
+        
+        .item-delete {
+            background: none;
+            border: none;
+            color: #777;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 5px;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .item-delete:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .budget-summary {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .net-amount {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: var(--border-radius);
+        }
+        
+        .positive {
+            background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+            color: var(--secondary-color);
+        }
+        
+        .negative {
+            background: linear-gradient(135deg, #ffeaea 0%, #f8d7da 100%);
+            color: var(--danger-color);
+        }
+        
+        .neutral {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: var(--primary-color);
+        }
+        
+        .budget-form {
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .form-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .form-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+        
+        .form-tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .form-tab.income-tab.active {
+            border-bottom-color: var(--secondary-color);
+            color: var(--secondary-color);
+        }
+        
+        .form-tab.expense-tab.active {
+            border-bottom-color: var(--danger-color);
+            color: var(--danger-color);
+        }
+        
+        .budget-form-content {
+            display: none;
+        }
+        
+        .budget-form-content.active {
+            display: block;
+        }
+        
+        .empty-budget {
+            text-align: center;
+            padding: 40px 20px;
+            color: #777;
+        }
+        
+        .empty-budget i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        /* Kart Ekleme Butonu Taksit Sayfasında */
+        .add-card-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 25px;
+        }
+        
+        .add-card-btn {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.2);
+            width: 100%;
+        }
+        
+        .add-card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Kart Seçim Bölümü */
+        .card-selection {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 25px;
+        }
+        
+        .card-selection h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .card-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+        
+        .card-item:hover {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            transform: translateY(-2px);
+        }
+        
+        .card-item.active {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .card-delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: #777;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+        
+        .card-delete-btn:hover {
+            background-color: var(--danger-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
         /* Responsive Tasarım */
         @media (max-width: 1200px) {
             .calculator-grid {
@@ -1133,6 +1382,10 @@
             }
             
             .card-info {
+                flex-direction: column;
+            }
+            
+            .budget-container {
                 flex-direction: column;
             }
         }
@@ -1179,19 +1432,11 @@
 </head>
 <body>
     <div class="container">
-        <!-- Sol Menü - Kart Listesi ve Finansal Araçlar -->
+        <!-- Sol Menü - Finansal Araçlar -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <h2><i class="fas fa-credit-card"></i> Kartlarım</h2>
-                <button class="add-card-btn" id="addCardBtn">+</button>
+                <h2><i class="fas fa-chart-line"></i> Taksitify</h2>
             </div>
-            <ul class="card-list" id="cardList">
-                <div class="empty-state">
-                    <i class="fas fa-credit-card"></i>
-                    <h3>Henüz kart eklenmemiş</h3>
-                    <p>Yeni bir kart eklemek için "+" butonuna tıklayın</p>
-                </div>
-            </ul>
             
             <div class="finance-tools">
                 <h3><i class="fas fa-tools"></i> Finansal Araçlar</h3>
@@ -1239,6 +1484,18 @@
                             <h3><i class="fas fa-hand-holding-usd"></i> Asgari Ödeme</h3>
                             <p id="minPayment">0 TL</p>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- Kart Yönetim Bölümü -->
+                <div class="card-selection">
+                    <h3><i class="fas fa-credit-card"></i> Kart Yönetimi</h3>
+                    <button class="add-card-btn" id="addCardBtn">
+                        <i class="fas fa-plus-circle"></i> Yeni Kart Ekle
+                    </button>
+                    
+                    <div class="card-list" id="cardList">
+                        <!-- Kartlar buraya eklenecek -->
                     </div>
                 </div>
                 
@@ -1358,7 +1615,7 @@
                                 </div>
                             </div>
                             
-                            <!-- YENİ: MANUEL STOPAJ GİRİŞİ -->
+                            <!-- MANUEL STOPAJ GİRİŞİ -->
                             <div class="stopaj-section">
                                 <div class="stopaj-toggle">
                                     <input type="checkbox" id="stopajToggle">
@@ -1401,7 +1658,7 @@
                                 <span class="result-value" id="annualReturnRate">50.00%</span>
                             </div>
                             
-                            <!-- YENİ: STOPAJ DETAYLARI -->
+                            <!-- STOPAJ DETAYLARI -->
                             <div class="tax-breakdown" id="taxBreakdown" style="display: none;">
                                 <h5 style="margin-bottom: 15px; color: #e74c3c;">
                                     <i class="fas fa-receipt"></i> Vergi Kesintileri
@@ -1423,7 +1680,7 @@
                                 </div>
                             </div>
                             
-                            <!-- DÜZELTİLMİŞ: REEL GETİRİ ARTIK NET KAZANCIN ENFLASYONDAN ARINDIRILMIŞ HALİ -->
+                            <!-- REEL GETİRİ ARTIK NET KAZANCIN ENFLASYONDAN ARINDIRILMIŞ HALİ -->
                             <div class="result-highlight">
                                 <div class="result-item">
                                     <span class="result-label">Reel Getiri (Net Kazancın Enflasyondan Arındırılmış Hali):</span>
@@ -1461,14 +1718,106 @@
                 <div class="header">
                     <h1><i class="fas fa-wallet"></i> Aylık Bütçe Hesaplayıcı</h1>
                 </div>
+                
                 <div class="finance-calculator active">
                     <div class="calculator-title">
                         <i class="fas fa-calculator"></i> Aylık Bütçe Planlayıcı
                     </div>
-                    <div class="empty-state">
-                        <i class="fas fa-tools"></i>
-                        <h3>Yakında Hizmetinizde</h3>
-                        <p>Bu özellik şu anda geliştirme aşamasındadır</p>
+                    
+                    <!-- Bütçe Formu -->
+                    <div class="budget-form">
+                        <div class="form-tabs">
+                            <button class="form-tab income-tab active" data-type="income">
+                                <i class="fas fa-plus-circle"></i> Gelir Kalemi Ekle
+                            </button>
+                            <button class="form-tab expense-tab" data-type="expense">
+                                <i class="fas fa-minus-circle"></i> Gider Kalemi Ekle
+                            </button>
+                        </div>
+                        
+                        <!-- Gelir Formu -->
+                        <div class="budget-form-content active" id="income-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="incomeName"><i class="fas fa-tag"></i> Gelir Kalemi Adı</label>
+                                    <input type="text" id="incomeName" class="form-control" placeholder="Maaş, yatırım geliri, vb.">
+                                </div>
+                                <div class="form-group">
+                                    <label for="incomeAmount"><i class="fas fa-money-bill-wave"></i> Tutar (TL)</label>
+                                    <input type="number" id="incomeAmount" class="form-control" placeholder="Gelir tutarını girin" min="0" step="0.01">
+                                </div>
+                            </div>
+                            <button class="btn btn-success" id="addIncomeBtnBudget">
+                                <i class="fas fa-plus"></i> Gelir Ekle
+                            </button>
+                        </div>
+                        
+                        <!-- Gider Formu -->
+                        <div class="budget-form-content" id="expense-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expenseNameBudget"><i class="fas fa-tag"></i> Gider Kalemi Adı</label>
+                                    <input type="text" id="expenseNameBudget" class="form-control" placeholder="Kira, faturalar, market, vb.">
+                                </div>
+                                <div class="form-group">
+                                    <label for="expenseAmountBudget"><i class="fas fa-money-bill-wave"></i> Tutar (TL)</label>
+                                    <input type="number" id="expenseAmountBudget" class="form-control" placeholder="Gider tutarını girin" min="0" step="0.01">
+                                </div>
+                            </div>
+                            <button class="btn btn-danger" id="addExpenseBtnBudget">
+                                <i class="fas fa-plus"></i> Gider Ekle
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- T-Muhasebe Görünümü -->
+                    <div class="budget-container">
+                        <!-- Gelir Kolonu (Sol) -->
+                        <div class="budget-column income">
+                            <div class="budget-header">
+                                <h3><i class="fas fa-arrow-down"></i> GELİRLER</h3>
+                            </div>
+                            
+                            <div class="budget-items" id="incomeItems">
+                                <div class="empty-budget">
+                                    <i class="fas fa-coins"></i>
+                                    <h4>Henüz gelir eklenmemiş</h4>
+                                    <p>Yukarıdaki formu kullanarak gelir ekleyin</p>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-total income-total" id="incomeTotal">
+                                Toplam Gelir: 0 TL
+                            </div>
+                        </div>
+                        
+                        <!-- Gider Kolonu (Sağ) -->
+                        <div class="budget-column expense">
+                            <div class="budget-header">
+                                <h3><i class="fas fa-arrow-up"></i> GİDERLER</h3>
+                            </div>
+                            
+                            <div class="budget-items" id="expenseItems">
+                                <div class="empty-budget">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <h4>Henüz gider eklenmemiş</h4>
+                                    <p>Yukarıdaki formu kullanarak gider ekleyin</p>
+                                </div>
+                            </div>
+                            
+                            <div class="budget-total expense-total" id="expenseTotal">
+                                Toplam Gider: 0 TL
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Net Bakiye Özeti -->
+                    <div class="budget-summary">
+                        <h3><i class="fas fa-scale-balanced"></i> Bütçe Özeti</h3>
+                        <div class="net-amount neutral" id="netAmount">
+                            Net Bakiye: 0 TL
+                        </div>
+                        <p id="budgetStatus">Gelir ve giderlerinizi ekleyerek bütçenizi görün</p>
                     </div>
                 </div>
             </div>
@@ -1702,6 +2051,13 @@
             asLimit: 25000
         };
 
+        // Bütçe veri yapısı
+        const budgetState = {
+            incomes: [],
+            expenses: [],
+            currentMonth: new Date().toLocaleDateString('tr-TR', { month: 'long', year: 'numeric' })
+        };
+
         // Enflasyon verileri
         const inflationData = {
             months: ['Ocak 2025', 'Şubat 2025', 'Mart 2025', 'Nisan 2025', 'Mayıs 2025', 'Haziran 2025', 'Temmuz 2025', 'Ağustos 2025', 'Eylül 2025'],
@@ -1709,6 +2065,12 @@
             ito: [5.16, 3.19, 3.79, 3.21, 2.83, 1.77, 2.62, 1.84, 3.19],
             enag: [8.20, 3.37, 3.91, 4.46, 3.66, 3.05, 3.75, 3.23, 3.79]
         };
+
+        // Ay isimleri
+        const monthNames = [
+            "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
+            "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
+        ];
 
         // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', function() {
@@ -1718,6 +2080,8 @@
             renderInflationChart();
             setupInvestmentCalculator();
             setupStopajToggle();
+            generateMonths();
+            setupBudgetPage();
         });
 
         // Stopaj toggle ayarları
@@ -1725,16 +2089,18 @@
             const stopajToggle = document.getElementById('stopajToggle');
             const stopajContent = document.getElementById('stopajContent');
             
-            stopajToggle.addEventListener('change', function() {
-                if (this.checked) {
-                    stopajContent.classList.add('active');
-                    debugLog('Stopaj hesaplaması aktifleştirildi');
-                } else {
-                    stopajContent.classList.remove('active');
-                    debugLog('Stopaj hesaplaması devre dışı bırakıldı');
-                }
-                calculateInvestmentReturn();
-            });
+            if (stopajToggle && stopajContent) {
+                stopajToggle.addEventListener('change', function() {
+                    if (this.checked) {
+                        stopajContent.classList.add('active');
+                        debugLog('Stopaj hesaplaması aktifleştirildi');
+                    } else {
+                        stopajContent.classList.remove('active');
+                        debugLog('Stopaj hesaplaması devre dışı bırakıldı');
+                    }
+                    calculateInvestmentReturn();
+                });
+            }
         }
 
         // Uygulamayı başlat
@@ -1818,28 +2184,223 @@
         function setupInvestmentCalculator() {
             // Getiri hesaplama butonu
             const calculateReturnBtn = document.getElementById('calculateReturnBtn');
-            calculateReturnBtn.addEventListener('click', calculateInvestmentReturn);
+            if (calculateReturnBtn) {
+                calculateReturnBtn.addEventListener('click', calculateInvestmentReturn);
+                
+                // Zaman periyodu değişikliği
+                document.getElementById('periodType').addEventListener('change', updateInflationRate);
+                document.getElementById('periodValue').addEventListener('input', updateInflationRate);
+                
+                // İlk hesaplamayı yap
+                updateInflationRate();
+                calculateInvestmentReturn();
+                
+                debugLog('Getiri hesaplama fonksiyonları kuruldu');
+            }
+        }
+
+        // Bütçe sayfasını kur
+        function setupBudgetPage() {
+            // Form tab'larını ayarla
+            const formTabs = document.querySelectorAll('.form-tab');
+            formTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const type = this.dataset.type;
+                    
+                    // Aktif tab'ı değiştir
+                    formTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // İlgili formu göster
+                    document.querySelectorAll('.budget-form-content').forEach(form => {
+                        form.classList.remove('active');
+                    });
+                    document.getElementById(`${type}-form`).classList.add('active');
+                });
+            });
             
-            // Zaman periyodu değişikliği
-            document.getElementById('periodType').addEventListener('change', updateInflationRate);
-            document.getElementById('periodValue').addEventListener('input', updateInflationRate);
+            // Gelir ekle butonu
+            const addIncomeBtn = document.getElementById('addIncomeBtnBudget');
+            if (addIncomeBtn) {
+                addIncomeBtn.addEventListener('click', function() {
+                    addBudgetItem('income');
+                });
+            }
             
-            // İlk hesaplamayı yap
-            updateInflationRate();
-            calculateInvestmentReturn();
+            // Gider ekle butonu
+            const addExpenseBtn = document.getElementById('addExpenseBtnBudget');
+            if (addExpenseBtn) {
+                addExpenseBtn.addEventListener('click', function() {
+                    addBudgetItem('expense');
+                });
+            }
             
-            debugLog('Getiri hesaplama fonksiyonları kuruldu');
+            // Başlangıçta bütçeyi render et
+            renderBudget();
+            
+            debugLog('Bütçe sayfası kuruldu');
+        }
+
+        // Bütçe kalemi ekle
+        function addBudgetItem(type) {
+            const nameInput = document.getElementById(`${type === 'income' ? 'incomeName' : 'expenseNameBudget'}`);
+            const amountInput = document.getElementById(`${type === 'income' ? 'incomeAmount' : 'expenseAmountBudget'}`);
+            
+            if (!nameInput || !amountInput) return;
+            
+            const name = nameInput.value.trim();
+            const amount = parseFloat(amountInput.value);
+            
+            if (!name) {
+                alert(`Lütfen bir ${type === 'income' ? 'gelir' : 'gider'} adı girin.`);
+                return;
+            }
+            
+            if (isNaN(amount) || amount <= 0) {
+                alert(`Lütfen geçerli bir ${type === 'income' ? 'gelir' : 'gider'} tutarı girin.`);
+                return;
+            }
+            
+            // Yeni kalem oluştur
+            const newItem = {
+                id: Date.now().toString(),
+                name: name,
+                amount: amount,
+                type: type,
+                date: new Date()
+            };
+            
+            // State'e ekle
+            budgetState[`${type}s`].push(newItem);
+            
+            // Formu temizle
+            nameInput.value = '';
+            amountInput.value = '';
+            
+            // UI'ı güncelle
+            renderBudget();
+            
+            debugLog(`${type === 'income' ? 'Gelir' : 'Gider'} eklendi: ${name} - ${amount} TL`);
+        }
+
+        // Bütçeyi render et
+        function renderBudget() {
+            // Gelirleri render et
+            renderBudgetItems('income');
+            
+            // Giderleri render et
+            renderBudgetItems('expense');
+            
+            // Toplamları güncelle
+            updateBudgetTotals();
+        }
+
+        // Bütçe kalemlerini render et
+        function renderBudgetItems(type) {
+            const container = document.getElementById(`${type}Items`);
+            if (!container) return;
+            
+            const items = budgetState[`${type}s`];
+            
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-budget">
+                        <i class="fas fa-${type === 'income' ? 'coins' : 'shopping-cart'}"></i>
+                        <h4>Henüz ${type === 'income' ? 'gelir' : 'gider'} eklenmemiş</h4>
+                        <p>Yukarıdaki formu kullanarak ${type === 'income' ? 'gelir' : 'gider'} ekleyin</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = `budget-item ${type}-item`;
+                itemElement.innerHTML = `
+                    <div class="item-content">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-amount ${type}-amount">${formatCurrency(item.amount)}</div>
+                    </div>
+                    <button class="item-delete" data-id="${item.id}" data-type="${type}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                // Silme butonu event listener'ı
+                const deleteBtn = itemElement.querySelector('.item-delete');
+                deleteBtn.addEventListener('click', function() {
+                    deleteBudgetItem(this.dataset.id, this.dataset.type);
+                });
+                
+                container.appendChild(itemElement);
+            });
+        }
+
+        // Bütçe toplamlarını güncelle
+        function updateBudgetTotals() {
+            // Toplam gelir
+            const totalIncome = budgetState.incomes.reduce((sum, item) => sum + item.amount, 0);
+            const incomeTotalEl = document.getElementById('incomeTotal');
+            if (incomeTotalEl) {
+                incomeTotalEl.textContent = `Toplam Gelir: ${formatCurrency(totalIncome)}`;
+            }
+            
+            // Toplam gider
+            const totalExpense = budgetState.expenses.reduce((sum, item) => sum + item.amount, 0);
+            const expenseTotalEl = document.getElementById('expenseTotal');
+            if (expenseTotalEl) {
+                expenseTotalEl.textContent = `Toplam Gider: ${formatCurrency(totalExpense)}`;
+            }
+            
+            // Net bakiye
+            const netAmount = totalIncome - totalExpense;
+            const netElement = document.getElementById('netAmount');
+            const statusElement = document.getElementById('budgetStatus');
+            
+            if (netElement && statusElement) {
+                netElement.textContent = `Net Bakiye: ${formatCurrency(Math.abs(netAmount))}`;
+                
+                if (netAmount > 0) {
+                    netElement.className = 'net-amount positive';
+                    statusElement.textContent = `Tebrikler! Bütçenizde ${formatCurrency(netAmount)} fazla var.`;
+                } else if (netAmount < 0) {
+                    netElement.className = 'net-amount negative';
+                    netElement.textContent = `Net Bakiye: -${formatCurrency(Math.abs(netAmount))}`;
+                    statusElement.textContent = `Dikkat! Bütçenizde ${formatCurrency(Math.abs(netAmount))} açık var.`;
+                } else {
+                    netElement.className = 'net-amount neutral';
+                    statusElement.textContent = 'Bütçeniz dengede.';
+                }
+            }
+        }
+
+        // Bütçe kalemi sil
+        function deleteBudgetItem(id, type) {
+            if (confirm('Bu kalemi silmek istediğinizden emin misiniz?')) {
+                budgetState[`${type}s`] = budgetState[`${type}s`].filter(item => item.id !== id);
+                renderBudget();
+                debugLog(`${type === 'income' ? 'Gelir' : 'Gider'} silindi: ${id}`);
+            }
         }
 
         // Enflasyon oranını güncelle
         function updateInflationRate() {
-            const periodType = document.getElementById('periodType').value;
-            const periodValue = parseFloat(document.getElementById('periodValue').value);
+            const periodType = document.getElementById('periodType');
+            const periodValue = document.getElementById('periodValue');
+            const inflationRate = document.getElementById('inflationRate');
+            const periodInflationInfo = document.getElementById('periodInflationInfo');
+            
+            if (!periodType || !periodValue || !inflationRate || !periodInflationInfo) return;
+            
+            const periodTypeValue = periodType.value;
+            const periodValueNum = parseFloat(periodValue.value);
             const monthlyInflation = 3.79; // ENAG Eylül 2025 aylık enflasyonu
             
             let periodInflation, inflationInfo;
             
-            switch(periodType) {
+            switch(periodTypeValue) {
                 case 'daily':
                     // Günlük enflasyon = Aylık enflasyon / 30
                     periodInflation = monthlyInflation / 30;
@@ -1858,50 +2419,60 @@
             }
             
             // Dönem enflasyonunu hesapla (bileşik)
-            const periodTotalInflation = periodInflation * periodValue;
+            const periodTotalInflation = periodInflation * periodValueNum;
             
-            document.getElementById('inflationRate').value = periodTotalInflation.toFixed(2);
-            document.getElementById('periodInflationInfo').textContent = inflationInfo;
+            inflationRate.value = periodTotalInflation.toFixed(2);
+            periodInflationInfo.textContent = inflationInfo;
             
-            debugLog(`Enflasyon oranı güncellendi: ${periodType} - ${periodTotalInflation.toFixed(2)}%`);
+            debugLog(`Enflasyon oranı güncellendi: ${periodTypeValue} - ${periodTotalInflation.toFixed(2)}%`);
         }
 
         // Getiri hesapla
         function calculateInvestmentReturn() {
             debugLog('Getiri hesaplama başlatıldı');
             
-            const initialPrice = parseFloat(document.getElementById('initialPrice').value);
-            const finalPrice = parseFloat(document.getElementById('finalPrice').value);
-            const periodValue = parseFloat(document.getElementById('periodValue').value);
-            const periodType = document.getElementById('periodType').value;
-            const inflationRate = parseFloat(document.getElementById('inflationRate').value) / 100;
-            const stopajToggle = document.getElementById('stopajToggle').checked;
-            const stopajOrani = parseFloat(document.getElementById('stopajOrani').value) / 100;
+            const initialPrice = document.getElementById('initialPrice');
+            const finalPrice = document.getElementById('finalPrice');
+            const periodValue = document.getElementById('periodValue');
+            const periodType = document.getElementById('periodType');
+            const inflationRate = document.getElementById('inflationRate');
+            const stopajToggle = document.getElementById('stopajToggle');
+            const stopajOrani = document.getElementById('stopajOrani');
             
-            if (isNaN(initialPrice) || isNaN(finalPrice) || isNaN(periodValue) || isNaN(inflationRate)) {
+            if (!initialPrice || !finalPrice || !periodValue || !periodType || !inflationRate) return;
+            
+            const initialPriceVal = parseFloat(initialPrice.value);
+            const finalPriceVal = parseFloat(finalPrice.value);
+            const periodValueVal = parseFloat(periodValue.value);
+            const periodTypeVal = periodType.value;
+            const inflationRateVal = parseFloat(inflationRate.value) / 100;
+            const stopajToggleVal = stopajToggle ? stopajToggle.checked : false;
+            const stopajOraniVal = stopajOrani ? parseFloat(stopajOrani.value) / 100 : 0;
+            
+            if (isNaN(initialPriceVal) || isNaN(finalPriceVal) || isNaN(periodValueVal) || isNaN(inflationRateVal)) {
                 alert('Lütfen tüm alanları doğru şekilde doldurun.');
                 return;
             }
             
-            if (initialPrice <= 0) {
+            if (initialPriceVal <= 0) {
                 alert('İlk fiyat 0\'dan büyük olmalıdır.');
                 return;
             }
             
             // Nominal getiri hesaplama
-            const nominalReturn = finalPrice - initialPrice;
-            const nominalReturnRate = (nominalReturn / initialPrice) * 100;
+            const nominalReturn = finalPriceVal - initialPriceVal;
+            const nominalReturnRate = (nominalReturn / initialPriceVal) * 100;
             
             // Yıllık getiri oranı hesaplama
             let annualReturnRate;
-            switch(periodType) {
+            switch(periodTypeVal) {
                 case 'daily':
                     // Günlük getiriyi yıllığa çevir
-                    annualReturnRate = nominalReturnRate * 365 / periodValue;
+                    annualReturnRate = nominalReturnRate * 365 / periodValueVal;
                     break;
                 case 'monthly':
                     // Aylık getiriyi yıllığa çevir
-                    annualReturnRate = nominalReturnRate * 12 / periodValue;
+                    annualReturnRate = nominalReturnRate * 12 / periodValueVal;
                     break;
                 case 'yearly':
                     // Yıllık getiri
@@ -1913,25 +2484,40 @@
             let stopajTutari = 0;
             let netGetiri = nominalReturn;
             
-            if (stopajToggle) {
-                stopajTutari = nominalReturn * stopajOrani;
+            if (stopajToggleVal) {
+                stopajTutari = nominalReturn * stopajOraniVal;
                 netGetiri = nominalReturn - stopajTutari;
                 
                 // Vergi detaylarını göster
-                document.getElementById('taxBreakdown').style.display = 'block';
-                document.getElementById('stopajOraniDisplay').textContent = '%' + (stopajOrani * 100).toFixed(2);
-                document.getElementById('stopajTutari').textContent = formatCurrency(stopajTutari);
-                document.getElementById('netGetiri').textContent = formatCurrency(netGetiri);
+                const taxBreakdown = document.getElementById('taxBreakdown');
+                if (taxBreakdown) {
+                    taxBreakdown.style.display = 'block';
+                    document.getElementById('stopajOraniDisplay').textContent = '%' + (stopajOraniVal * 100).toFixed(2);
+                    document.getElementById('stopajTutari').textContent = formatCurrency(stopajTutari);
+                    document.getElementById('netGetiri').textContent = formatCurrency(netGetiri);
+                }
                 
                 debugLog(`Stopaj hesaplandı: Stopaj Tutarı: ${stopajTutari.toFixed(2)} TL, Net Getiri: ${netGetiri.toFixed(2)} TL`);
             } else {
-                document.getElementById('taxBreakdown').style.display = 'none';
+                const taxBreakdown = document.getElementById('taxBreakdown');
+                if (taxBreakdown) {
+                    taxBreakdown.style.display = 'none';
+                }
             }
             
             // Reel getiri hesaplama (enflasyondan arındırılmış)
-            // Artık net getiriyi enflasyondan arındırıyoruz
-            const realReturnRate = (netGetiri / initialPrice) * 100 - (inflationRate * 100);
-            const realReturn = initialPrice * (realReturnRate / 100);
+            // DÜZELTME: Reel getiri = Net Getiri - (Net Getiri * Enflasyon Oranı)
+            let realReturn, realReturnRate;
+            
+            if (finalPriceVal > initialPriceVal) {
+                // Pozitif getiri durumu
+                realReturn = netGetiri - (netGetiri * inflationRateVal);
+                realReturnRate = (realReturn / initialPriceVal) * 100;
+            } else {
+                // Negatif getiri durumu
+                realReturn = netGetiri;
+                realReturnRate = (realReturn / initialPriceVal) * 100;
+            }
             
             // Sonuçları göster
             document.getElementById('nominalReturn').textContent = formatCurrency(nominalReturn);
@@ -1941,18 +2527,20 @@
             document.getElementById('realReturnRate').textContent = realReturnRate.toFixed(2) + '%';
             document.getElementById('purchasingPower').textContent = realReturnRate.toFixed(2) + '%';
             
-            // Grafikleri oluştur - DÜZELTME: 3. sütunda her zaman reel getiri gösterilecek
-            createReturnChart(initialPrice, finalPrice, realReturn, stopajToggle, stopajTutari, netGetiri);
+            // Grafikleri oluştur
+            createReturnChart(initialPriceVal, finalPriceVal, realReturn, stopajToggleVal, stopajTutari, netGetiri);
             
             debugLog(`Getiri hesaplandı: Nominal Getiri: ${nominalReturn.toFixed(2)} TL, Reel Getiri: ${realReturn.toFixed(2)} TL`);
         }
 
-        // Getiri grafiğini oluştur - DÜZELTİLMİŞ: 3. sütunda her zaman reel getiri gösterilecek
+        // Getiri grafiğini oluştur
         function createReturnChart(initialPrice, finalPrice, realReturn, stopajToggle, stopajTutari, netGetiri) {
             debugLog('Getiri grafiği oluşturuluyor...');
             
-            const ctx = document.getElementById('returnChart').getContext('2d');
+            const ctx = document.getElementById('returnChart');
             const legendContainer = document.getElementById('stackedLegend');
+            
+            if (!ctx || !legendContainer) return;
             
             // Önceki grafik varsa destroy et
             if (window.returnChartInstance) {
@@ -1973,7 +2561,6 @@
             const totalWithReturn = initialPrice + realReturn;
 
             // Veri setlerini hazırla - STACKED YAPISI
-            // DÜZELTME: 3. sütunda her zaman reel getiri gösterilecek
             let datasets = [];
             let labels = ['İlk Fiyat', 'Son Fiyat', 'As Kazanç'];
 
@@ -2141,7 +2728,7 @@
                 legendContainer.innerHTML = legendHTML;
             }
 
-            window.returnChartInstance = new Chart(ctx, {
+            window.returnChartInstance = new Chart(ctx.getContext('2d'), {
                 type: 'bar',
                 data: {
                     labels: labels,
@@ -2265,14 +2852,15 @@
         function renderInflationChart() {
             debugLog('Enflasyon grafiği oluşturuluyor...');
             
-            const ctx = document.getElementById('inflationChart').getContext('2d');
+            const ctx = document.getElementById('inflationChart');
+            if (!ctx) return;
             
             // Eğer önceki chart varsa destroy et
             if (window.inflationChartInstance) {
                 window.inflationChartInstance.destroy();
             }
             
-            window.inflationChartInstance = new Chart(ctx, {
+            window.inflationChartInstance = new Chart(ctx.getContext('2d'), {
                 type: 'line',
                 data: {
                     labels: inflationData.months,
@@ -2414,6 +3002,7 @@
             
             // Aktif kartı ayarla
             state.currentCard = newCard;
+            state.asLimit = asLimit;
             
             // UI'ı güncelle
             updateUI();
@@ -2422,6 +3011,194 @@
             closeAddCardModal();
             
             debugLog(`Yeni kart eklendi: ${cardName}`);
+        }
+
+        // UI'ı güncelle
+        function updateUI() {
+            if (state.currentCard) {
+                // Kart bilgilerini güncelle
+                document.getElementById('currentCardName').textContent = state.currentCard.name;
+                document.getElementById('availableLimit').textContent = formatCurrency(state.currentCard.availableLimit);
+                document.getElementById('totalDebt').textContent = formatCurrency(state.currentCard.totalDebt);
+                document.getElementById('minPayment').textContent = formatCurrency(state.currentCard.minPayment);
+                
+                // Limit doluluk çubuğunu güncelle
+                const limitPercentage = ((state.currentCard.limit - state.currentCard.availableLimit) / state.currentCard.limit) * 100;
+                document.getElementById('limitFill').style.width = `${limitPercentage}%`;
+                
+                // As limit input'unu güncelle
+                document.getElementById('asLimitInput').value = state.asLimit;
+                
+                // Kart listesini render et
+                renderCardList();
+                
+                // Harcamaları render et
+                renderExpenses();
+                
+                // Aylık ödemeleri render et
+                renderMonthColumns();
+            } else {
+                // Eğer aktif kart yoksa varsayılan değerleri göster
+                document.getElementById('currentCardName').textContent = 'Kart Seçin';
+                document.getElementById('availableLimit').textContent = formatCurrency(0);
+                document.getElementById('totalDebt').textContent = formatCurrency(0);
+                document.getElementById('minPayment').textContent = formatCurrency(0);
+                document.getElementById('limitFill').style.width = '0%';
+            }
+        }
+
+        // Kart listesini render et
+        function renderCardList() {
+            const cardList = document.getElementById('cardList');
+            
+            if (state.cards.length === 0) {
+                cardList.innerHTML = `
+                    <div class="empty-state" style="width: 100%; margin-top: 15px;">
+                        <i class="fas fa-credit-card"></i>
+                        <h3>Henüz kart eklenmemiş</h3>
+                        <p>Yukarıdaki "Yeni Kart Ekle" butonuna tıklayarak ilk kartınızı ekleyin</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            cardList.innerHTML = '';
+            
+            state.cards.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.className = `card-item ${state.currentCard && state.currentCard.id === card.id ? 'active' : ''}`;
+                cardElement.innerHTML = `
+                    <div class="card-name">${card.name}</div>
+                    <div class="card-stats">
+                        <span>Limit: ${formatCurrency(card.limit)}</span>
+                        <span>Kalan: ${formatCurrency(card.availableLimit)}</span>
+                    </div>
+                    <button class="card-delete-btn" data-id="${card.id}">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                // Kart seçme event'i
+                cardElement.addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('card-delete-btn')) {
+                        selectCard(card.id);
+                    }
+                });
+                
+                // Kart silme butonu
+                const deleteBtn = cardElement.querySelector('.card-delete-btn');
+                deleteBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    deleteCard(card.id);
+                });
+                
+                cardList.appendChild(cardElement);
+            });
+        }
+
+        // Kart seç
+        function selectCard(cardId) {
+            const card = state.cards.find(c => c.id === cardId);
+            if (card) {
+                state.currentCard = card;
+                state.asLimit = card.asLimit;
+                updateUI();
+                debugLog(`Kart seçildi: ${card.name}`);
+            }
+        }
+
+        // Kart sil
+        function deleteCard(cardId) {
+            if (confirm('Bu kartı silmek istediğinizden emin misiniz? Kartla birlikte tüm harcamalar da silinecektir.')) {
+                // Kartı state'den kaldır
+                state.cards = state.cards.filter(c => c.id !== cardId);
+                
+                // Eğer silinen kart aktif kart ise, aktif kartı sıfırla
+                if (state.currentCard && state.currentCard.id === cardId) {
+                    state.currentCard = state.cards.length > 0 ? state.cards[0] : null;
+                }
+                
+                // Eğer aktif kart yoksa, harcamaları temizle
+                if (!state.currentCard) {
+                    state.expenses = [];
+                }
+                
+                // UI'ı güncelle
+                updateUI();
+                
+                debugLog(`Kart silindi: ${cardId}`);
+            }
+        }
+
+        // Harcamaları render et
+        function renderExpenses() {
+            const expenseCards = document.getElementById('expenseCards');
+            
+            if (!state.currentCard || state.expenses.length === 0) {
+                expenseCards.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <h3>Henüz harcama eklenmemiş</h3>
+                        <p>Yukarıdaki formu kullanarak ilk harcamanızı ekleyin</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sadece aktif karta ait harcamaları göster
+            const cardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
+            
+            if (cardExpenses.length === 0) {
+                expenseCards.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <h3>Henüz harcama eklenmemiş</h3>
+                        <p>Yukarıdaki formu kullanarak ilk harcamanızı ekleyin</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            expenseCards.innerHTML = '';
+            
+            cardExpenses.forEach(expense => {
+                const expenseCard = document.createElement('div');
+                expenseCard.className = 'expense-card';
+                expenseCard.innerHTML = `
+                    <div class="expense-card-header">
+                        <div class="expense-name">${expense.name}</div>
+                        <button class="delete-btn" data-id="${expense.id}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="expense-details">
+                        <p>
+                            <span class="label">Tutar:</span>
+                            <span class="value">${formatCurrency(expense.amount)}</span>
+                        </p>
+                        <p>
+                            <span class="label">Taksit:</span>
+                            <span class="value">${expense.installmentCount} ay</span>
+                        </p>
+                        <p>
+                            <span class="label">Aylık:</span>
+                            <span class="value">${formatCurrency(expense.monthlyPayment)}</span>
+                        </p>
+                        <p>
+                            <span class="label">Toplam:</span>
+                            <span class="value">${formatCurrency(expense.totalAmount)}</span>
+                        </p>
+                    </div>
+                `;
+                
+                // Silme butonu event'i
+                const deleteBtn = expenseCard.querySelector('.delete-btn');
+                deleteBtn.addEventListener('click', function() {
+                    deleteExpense(expense.id);
+                });
+                
+                expenseCards.appendChild(expenseCard);
+            });
         }
 
         // Harcama ekle
@@ -2445,206 +3222,172 @@
                 return;
             }
             
-            if (isNaN(installmentCount) || installmentCount <= 0) {
+            if (isNaN(installmentCount) || installmentCount < 1) {
                 alert('Lütfen geçerli bir taksit sayısı girin.');
                 return;
             }
             
+            // Aylık ödeme hesapla (basit faizsiz)
+            const monthlyPayment = expenseAmount / installmentCount;
+            const totalAmount = expenseAmount; // Faizsiz olduğu için toplam aynı
+            
             // Yeni harcama oluştur
             const newExpense = {
                 id: Date.now().toString(),
+                cardId: state.currentCard.id,
                 name: expenseName,
                 amount: expenseAmount,
-                installments: installmentCount,
-                monthlyPayment: expenseAmount / installmentCount,
-                cardId: state.currentCard.id
+                installmentCount: installmentCount,
+                monthlyPayment: monthlyPayment,
+                totalAmount: totalAmount,
+                date: new Date()
             };
             
             // State'e ekle
             state.expenses.push(newExpense);
             
+            // Kart bilgilerini güncelle
+            updateCardCalculations();
+            
             // UI'ı güncelle
             updateUI();
             
-            debugLog(`Yeni harcama eklendi: ${expenseName} - ${expenseAmount} TL - ${installmentCount} taksit`);
-        }
-
-        // UI'ı güncelle
-        function updateUI() {
-            // Kart listesini güncelle
-            updateCardList();
-            
-            // Kart bilgilerini güncelle
-            updateCardInfo();
-            
-            // Harcamaları güncelle
-            updateExpenses();
-            
-            // Aylık ödemeleri güncelle
-            updateMonthColumns();
-        }
-
-        // Kart listesini güncelle
-        function updateCardList() {
-            const cardList = document.getElementById('cardList');
-            
-            if (state.cards.length === 0) {
-                cardList.innerHTML = '<div class="empty-state"><i class="fas fa-credit-card"></i><h3>Henüz kart eklenmemiş</h3><p>Yeni bir kart eklemek için "+" butonuna tıklayın</p></div>';
-                return;
-            }
-            
-            cardList.innerHTML = '';
-            
-            state.cards.forEach(card => {
-                const cardItem = document.createElement('li');
-                cardItem.className = `card-item ${state.currentCard && state.currentCard.id === card.id ? 'active' : ''}`;
-                cardItem.innerHTML = `
-                    <div class="card-name">${card.name}</div>
-                    <div class="card-stats">
-                        <span>Limit: ${formatCurrency(card.limit)}</span>
-                        <span>Kalan: ${formatCurrency(card.availableLimit)}</span>
-                    </div>
-                    <button class="card-delete-btn" data-card-id="${card.id}">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-                
-                cardItem.addEventListener('click', () => {
-                    state.currentCard = card;
-                    updateUI();
-                    debugLog(`Kart değiştirildi: ${card.name}`);
-                });
-                
-                // Silme butonu event listener'ı
-                const deleteBtn = cardItem.querySelector('.card-delete-btn');
-                deleteBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    deleteCard(card.id);
-                });
-                
-                cardList.appendChild(cardItem);
-            });
-        }
-
-        // Kart bilgilerini güncelle
-        function updateCardInfo() {
-            if (!state.currentCard) {
-                document.getElementById('currentCardName').textContent = 'Kart Seçin';
-                document.getElementById('availableLimit').textContent = '0 TL';
-                document.getElementById('totalDebt').textContent = '0 TL';
-                document.getElementById('minPayment').textContent = '0 TL';
-                document.getElementById('limitFill').style.width = '0%';
-                return;
-            }
-            
-            document.getElementById('currentCardName').textContent = state.currentCard.name;
-            document.getElementById('availableLimit').textContent = formatCurrency(state.currentCard.availableLimit);
-            document.getElementById('totalDebt').textContent = formatCurrency(state.currentCard.totalDebt);
-            document.getElementById('minPayment').textContent = formatCurrency(state.currentCard.minPayment);
-            
-            // Limit doluluk oranını güncelle
-            const usedLimit = state.currentCard.limit - state.currentCard.availableLimit;
-            const limitPercentage = (usedLimit / state.currentCard.limit) * 100;
-            document.getElementById('limitFill').style.width = `${limitPercentage}%`;
-        }
-
-        // Harcamaları güncelle
-        function updateExpenses() {
-            const expenseCards = document.getElementById('expenseCards');
-            const currentCardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
-            
-            if (currentCardExpenses.length === 0) {
-                expenseCards.innerHTML = '<div class="empty-state"><i class="fas fa-receipt"></i><h3>Henüz harcama eklenmemiş</h3><p>Yukarıdaki formu kullanarak ilk harcamanızı ekleyin</p></div>';
-                return;
-            }
-            
-            expenseCards.innerHTML = '';
-            
-            currentCardExpenses.forEach(expense => {
-                const expenseCard = document.createElement('div');
-                expenseCard.className = 'expense-card';
-                expenseCard.innerHTML = `
-                    <div class="expense-card-header">
-                        <div class="expense-name">${expense.name}</div>
-                        <button class="delete-btn" data-expense-id="${expense.id}">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="expense-details">
-                        <p><span class="label">Toplam:</span> <span class="value">${formatCurrency(expense.amount)}</span></p>
-                        <p><span class="label">Taksit:</span> <span class="value">${expense.installments} ay</span></p>
-                        <p><span class="label">Aylık:</span> <span class="value">${formatCurrency(expense.monthlyPayment)}</span></p>
-                    </div>
-                `;
-                
-                // Silme butonu event listener'ı
-                const deleteBtn = expenseCard.querySelector('.delete-btn');
-                deleteBtn.addEventListener('click', () => {
-                    deleteExpense(expense.id);
-                });
-                
-                expenseCards.appendChild(expenseCard);
-            });
-        }
-
-        // Aylık ödemeleri güncelle
-        function updateMonthColumns() {
-            // Bu fonksiyon aylık ödeme tablosunu günceller
-            // Basit bir implementasyon:
-            renderMonthColumns();
-        }
-
-        // Aylık sütunları render et
-        function renderMonthColumns() {
-            const monthsContainer = document.getElementById('monthsContainer');
-            
-            if (state.expenses.length === 0) {
-                monthsContainer.innerHTML = '<div class="empty-state"><i class="fas fa-calendar-times"></i><h3>Henüz harcama eklenmemiş</h3><p>Harcama ekleyin ve aylara dağıtılsın</p></div>';
-                return;
-            }
-            
-            // Basit bir implementasyon - gerçek uygulamada daha karmaşık hesaplamalar yapılır
-            monthsContainer.innerHTML = '';
-            
-            for (let i = 0; i < 6; i++) {
-                const monthColumn = document.createElement('div');
-                monthColumn.className = 'month-column';
-                monthColumn.innerHTML = `
-                    <div class="month-header">Ay ${i + 1}</div>
-                    <div class="month-total">Toplam: ${formatCurrency(500)}</div>
-                `;
-                
-                monthsContainer.appendChild(monthColumn);
-            }
-            
-            document.getElementById('monthRange').textContent = `Aylar 1-6`;
-        }
-
-        // Kart sil
-        function deleteCard(cardId) {
-            if (confirm('Bu kartı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
-                state.cards = state.cards.filter(card => card.id !== cardId);
-                
-                // Eğer silinen kart aktif kart ise, aktif kartı sıfırla
-                if (state.currentCard && state.currentCard.id === cardId) {
-                    state.currentCard = state.cards.length > 0 ? state.cards[0] : null;
-                }
-                
-                // Bu karta ait harcamaları da sil
-                state.expenses = state.expenses.filter(expense => expense.cardId !== cardId);
-                
-                updateUI();
-                debugLog(`Kart silindi: ${cardId}`);
-            }
+            debugLog(`Harcama eklendi: ${expenseName} - ${expenseAmount} TL - ${installmentCount} taksit`);
         }
 
         // Harcama sil
         function deleteExpense(expenseId) {
             if (confirm('Bu harcamayı silmek istediğinizden emin misiniz?')) {
+                // Harcamayı state'den kaldır
                 state.expenses = state.expenses.filter(expense => expense.id !== expenseId);
+                
+                // Kart bilgilerini güncelle
+                updateCardCalculations();
+                
+                // UI'ı güncelle
                 updateUI();
+                
                 debugLog(`Harcama silindi: ${expenseId}`);
             }
+        }
+
+        // Kart hesaplamalarını güncelle
+        function updateCardCalculations() {
+            if (!state.currentCard) return;
+            
+            // Aktif karta ait harcamaları filtrele
+            const cardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
+            
+            // Toplam borç hesapla
+            const totalDebt = cardExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+            
+            // Kullanılabilir limit hesapla
+            const availableLimit = state.currentCard.limit - totalDebt;
+            
+            // Asgari ödeme hesapla (basitçe toplam borcun %20'si olarak)
+            const minPayment = totalDebt * 0.2;
+            
+            // Kart bilgilerini güncelle
+            state.currentCard.totalDebt = totalDebt;
+            state.currentCard.availableLimit = availableLimit;
+            state.currentCard.minPayment = minPayment;
+            
+            // Aylık ödemeleri hesapla
+            calculateMonthlyPayments();
+        }
+
+        // Aylık ödemeleri hesapla
+        function calculateMonthlyPayments() {
+            if (!state.currentCard) return;
+            
+            // Aktif karta ait harcamaları filtrele
+            const cardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
+            
+            // Ayları oluştur
+            generateMonths();
+            
+            // Aylık ödemeleri sıfırla
+            state.payments = state.months.map(month => ({
+                month: month,
+                total: 0,
+                expenses: []
+            }));
+            
+            // Her harcamayı aylara dağıt
+            cardExpenses.forEach(expense => {
+                for (let i = 0; i < expense.installmentCount; i++) {
+                    const paymentMonthIndex = i;
+                    if (paymentMonthIndex < state.payments.length) {
+                        state.payments[paymentMonthIndex].total += expense.monthlyPayment;
+                        state.payments[paymentMonthIndex].expenses.push({
+                            name: expense.name,
+                            amount: expense.monthlyPayment
+                        });
+                    }
+                }
+            });
+        }
+
+        // Ayları oluştur
+        function generateMonths() {
+            const today = new Date();
+            state.months = [];
+            
+            for (let i = 0; i < 12; i++) {
+                const monthDate = new Date(today.getFullYear(), today.getMonth() + i, 1);
+                const monthName = monthNames[monthDate.getMonth()];
+                const year = monthDate.getFullYear();
+                state.months.push(`${monthName} ${year}`);
+            }
+        }
+
+        // Ay sütunlarını render et
+        function renderMonthColumns() {
+            const monthsContainer = document.getElementById('monthsContainer');
+            const monthRange = document.getElementById('monthRange');
+            
+            if (!state.currentCard || state.expenses.length === 0) {
+                monthsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>Henüz harcama eklenmemiş</h3>
+                        <p>Harcama ekleyin ve aylara dağıtılsın</p>
+                    </div>
+                `;
+                monthRange.textContent = 'Aylar 1-6';
+                return;
+            }
+            
+            // Görüntülenecek ayları belirle
+            const startIndex = state.currentMonthIndex;
+            const endIndex = Math.min(startIndex + state.monthsPerView, state.payments.length);
+            const displayMonths = state.payments.slice(startIndex, endIndex);
+            
+            // Ay aralığını güncelle
+            monthRange.textContent = `Aylar ${startIndex + 1}-${endIndex}`;
+            
+            monthsContainer.innerHTML = '';
+            
+            displayMonths.forEach(monthData => {
+                const monthColumn = document.createElement('div');
+                monthColumn.className = 'month-column';
+                monthColumn.innerHTML = `
+                    <div class="month-header">${monthData.month}</div>
+                    <div class="month-expenses">
+                        ${monthData.expenses.map(expense => `
+                            <div class="expense-item">
+                                <div class="expense-item-header">
+                                    <div class="expense-name">${expense.name}</div>
+                                    <div class="expense-amount">${formatCurrency(expense.amount)}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="month-total">Toplam: ${formatCurrency(monthData.total)}</div>
+                `;
+                
+                monthsContainer.appendChild(monthColumn);
+            });
         }
     </script>
 </body>
