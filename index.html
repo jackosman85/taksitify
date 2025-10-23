@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taksitify - Finansal Hesaplama ve Analiz Platformu</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -1375,6 +1378,128 @@
             transform: scale(1.1);
         }
 
+        /* Rapor Düğmeleri için Stiller */
+        .report-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+        
+        .report-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .report-btn-pdf {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(231, 76, 60, 0.2);
+        }
+        
+        .report-btn-excel {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2);
+        }
+        
+        .report-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .report-section {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            margin-top: 30px;
+        }
+        
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .report-title {
+            font-size: 1.4rem;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .report-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .report-summary-item {
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .report-summary-label {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: 8px;
+        }
+        
+        .report-summary-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .report-table th,
+        .report-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .report-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .report-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .report-footer {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
         /* Responsive Tasarım */
         @media (max-width: 1200px) {
             .calculator-grid {
@@ -1426,6 +1551,10 @@
             
             .month-navigation {
                 flex-wrap: wrap;
+            }
+            
+            .report-actions {
+                flex-direction: column;
             }
         }
     </style>
@@ -1565,6 +1694,46 @@
                             <h3>Henüz harcama eklenmemiş</h3>
                             <p>Harcama ekleyin ve aylara dağıtılsın</p>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- Yeni Eklenen Rapor Bölümü -->
+                <div class="report-section">
+                    <div class="report-header">
+                        <h2 class="report-title"><i class="fas fa-file-alt"></i> Taksit Raporu</h2>
+                        <div class="report-actions">
+                            <button class="report-btn report-btn-pdf" id="generatePdfReport">
+                                <i class="fas fa-file-pdf"></i> PDF Raporu İndir
+                            </button>
+                            <button class="report-btn report-btn-excel" id="generateExcelReport">
+                                <i class="fas fa-file-excel"></i> Excel Raporu İndir
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="report-summary" id="taksitReportSummary">
+                        <!-- Rapor özeti burada oluşturulacak -->
+                    </div>
+                    
+                    <div class="report-content">
+                        <h3><i class="fas fa-list"></i> Harcama Detayları</h3>
+                        <table class="report-table" id="taksitReportTable">
+                            <thead>
+                                <tr>
+                                    <th>Harcama Adı</th>
+                                    <th>Tutar</th>
+                                    <th>Taksit Sayısı</th>
+                                    <th>Toplam</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Harcama detayları burada oluşturulacak -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="report-footer">
+                        <p><i class="fas fa-info-circle"></i> Bu rapor Taksitify tarafından oluşturulmuştur. Tarih: <span id="reportDate"></span></p>
                     </div>
                 </div>
             </div>
@@ -1811,7 +1980,7 @@
                         </div>
                     </div>
                     
-                    <!-- Net Bakiye Özeti -->
+                    <!-- Net Bakiye Özetı -->
                     <div class="budget-summary">
                         <h3><i class="fas fa-scale-balanced"></i> Bütçe Özeti</h3>
                         <div class="net-amount neutral" id="netAmount">
@@ -2082,6 +2251,16 @@
             setupStopajToggle();
             generateMonths();
             setupBudgetPage();
+            
+            // Rapor düğmelerine event listener'lar ekle
+            document.getElementById('generatePdfReport').addEventListener('click', generatePdfReport);
+            document.getElementById('generateExcelReport').addEventListener('click', generateExcelReport);
+            
+            // Rapor tarihini ayarla
+            document.getElementById('reportDate').textContent = new Date().toLocaleDateString('tr-TR');
+            
+            // İlk raporu oluştur
+            updateTaksitReport();
         });
 
         // Stopaj toggle ayarları
@@ -3037,6 +3216,9 @@
                 
                 // Aylık ödemeleri render et
                 renderMonthColumns();
+                
+                // Raporu güncelle
+                updateTaksitReport();
             } else {
                 // Eğer aktif kart yoksa varsayılan değerleri göster
                 document.getElementById('currentCardName').textContent = 'Kart Seçin';
@@ -3044,6 +3226,9 @@
                 document.getElementById('totalDebt').textContent = formatCurrency(0);
                 document.getElementById('minPayment').textContent = formatCurrency(0);
                 document.getElementById('limitFill').style.width = '0%';
+                
+                // Raporu güncelle
+                updateTaksitReport();
             }
         }
 
@@ -3181,10 +3366,6 @@
                             <span class="value">${expense.installmentCount} ay</span>
                         </p>
                         <p>
-                            <span class="label">Aylık:</span>
-                            <span class="value">${formatCurrency(expense.monthlyPayment)}</span>
-                        </p>
-                        <p>
                             <span class="label">Toplam:</span>
                             <span class="value">${formatCurrency(expense.totalAmount)}</span>
                         </p>
@@ -3227,19 +3408,14 @@
                 return;
             }
             
-            // Aylık ödeme hesapla (basit faizsiz)
-            const monthlyPayment = expenseAmount / installmentCount;
-            const totalAmount = expenseAmount; // Faizsiz olduğu için toplam aynı
-            
-            // Yeni harcama oluştur
+            // Yeni harcama oluştur - Aylık ödeme artık hesaplanmıyor
             const newExpense = {
                 id: Date.now().toString(),
                 cardId: state.currentCard.id,
                 name: expenseName,
                 amount: expenseAmount,
                 installmentCount: installmentCount,
-                monthlyPayment: monthlyPayment,
-                totalAmount: totalAmount,
+                totalAmount: expenseAmount, // Toplam tutar harcama tutarına eşit
                 date: new Date()
             };
             
@@ -3313,15 +3489,16 @@
                 expenses: []
             }));
             
-            // Her harcamayı aylara dağıt
+            // Her harcamayı aylara dağıt - TAM TUTAR OLARAK
             cardExpenses.forEach(expense => {
                 for (let i = 0; i < expense.installmentCount; i++) {
                     const paymentMonthIndex = i;
                     if (paymentMonthIndex < state.payments.length) {
-                        state.payments[paymentMonthIndex].total += expense.monthlyPayment;
+                        // Her ay için tam harcama tutarını ekle
+                        state.payments[paymentMonthIndex].total += expense.amount;
                         state.payments[paymentMonthIndex].expenses.push({
                             name: expense.name,
-                            amount: expense.monthlyPayment
+                            amount: expense.amount
                         });
                     }
                 }
@@ -3388,6 +3565,254 @@
                 
                 monthsContainer.appendChild(monthColumn);
             });
+        }
+
+        // Taksit raporunu güncelle
+        function updateTaksitReport() {
+            if (!state.currentCard) return;
+            
+            // Aktif karta ait harcamaları filtrele
+            const cardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
+            
+            // Rapor özetini güncelle
+            updateReportSummary(cardExpenses);
+            
+            // Rapor tablosunu güncelle
+            updateReportTable(cardExpenses);
+        }
+        
+        // Rapor özetini güncelle
+        function updateReportSummary(expenses) {
+            const summaryContainer = document.getElementById('taksitReportSummary');
+            
+            if (expenses.length === 0) {
+                summaryContainer.innerHTML = `
+                    <div class="empty-state" style="width: 100%;">
+                        <i class="fas fa-receipt"></i>
+                        <h3>Henüz harcama eklenmemiş</h3>
+                        <p>Rapor oluşturmak için harcama ekleyin</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Toplam hesaplamalar
+            const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            const totalInstallments = expenses.reduce((sum, expense) => sum + expense.installmentCount, 0);
+            
+            summaryContainer.innerHTML = `
+                <div class="report-summary-item">
+                    <div class="report-summary-label">Toplam Harcama</div>
+                    <div class="report-summary-value">${formatCurrency(totalExpenses)}</div>
+                </div>
+                <div class="report-summary-item">
+                    <div class="report-summary-label">Toplam Taksit</div>
+                    <div class="report-summary-value">${totalInstallments}</div>
+                </div>
+                <div class="report-summary-item">
+                    <div class="report-summary-label">Toplam Harcama Sayısı</div>
+                    <div class="report-summary-value">${expenses.length}</div>
+                </div>
+            `;
+        }
+        
+        // Rapor tablosunu güncelle
+        function updateReportTable(expenses) {
+            const tableBody = document.querySelector('#taksitReportTable tbody');
+            
+            if (expenses.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 20px;">
+                            <i class="fas fa-info-circle"></i> Henüz harcama eklenmemiş
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tableBody.innerHTML = '';
+            
+            expenses.forEach(expense => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${expense.name}</td>
+                    <td>${formatCurrency(expense.amount)}</td>
+                    <td>${expense.installmentCount} ay</td>
+                    <td>${formatCurrency(expense.totalAmount)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // PDF raporu oluştur
+        function generatePdfReport() {
+            if (!state.currentCard) {
+                alert('Lütfen önce bir kart seçin.');
+                return;
+            }
+            
+            const cardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
+            
+            if (cardExpenses.length === 0) {
+                alert('Rapor oluşturmak için harcama ekleyin.');
+                return;
+            }
+            
+            // PDF oluştur
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Başlık
+            doc.setFontSize(20);
+            doc.setTextColor(44, 62, 80);
+            doc.text('Taksitify - Taksit Raporu', 20, 30);
+            
+            // Tarih
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Oluşturulma Tarihi: ${new Date().toLocaleDateString('tr-TR')}`, 20, 45);
+            
+            // Kart bilgileri
+            doc.setFontSize(14);
+            doc.setTextColor(44, 62, 80);
+            doc.text(`Kart: ${state.currentCard.name}`, 20, 65);
+            doc.text(`Limit: ${formatCurrency(state.currentCard.limit)}`, 20, 80);
+            doc.text(`Kalan Limit: ${formatCurrency(state.currentCard.availableLimit)}`, 20, 95);
+            
+            // Özet bilgiler
+            const totalExpenses = cardExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+            const totalInstallments = cardExpenses.reduce((sum, expense) => sum + expense.installmentCount, 0);
+            
+            doc.text(`Toplam Harcama: ${formatCurrency(totalExpenses)}`, 120, 65);
+            doc.text(`Toplam Taksit: ${totalInstallments}`, 120, 80);
+            doc.text(`Asgari Ödeme: ${formatCurrency(state.currentCard.minPayment)}`, 120, 95);
+            
+            // Tablo başlığı
+            doc.setFontSize(16);
+            doc.text('Harcama Detayları', 20, 120);
+            
+            // Tablo verileri
+            const tableData = cardExpenses.map(expense => [
+                expense.name,
+                formatCurrency(expense.amount),
+                `${expense.installmentCount} ay`,
+                formatCurrency(expense.totalAmount)
+            ]);
+            
+            // Tablo oluştur
+            doc.autoTable({
+                startY: 130,
+                head: [['Harcama Adı', 'Tutar', 'Taksit', 'Toplam']],
+                body: tableData,
+                theme: 'grid',
+                styles: { fontSize: 10 },
+                headStyles: { fillColor: [52, 152, 219] }
+            });
+            
+            // Aylık ödemeler tablosu
+            const finalY = doc.lastAutoTable.finalY + 20;
+            doc.setFontSize(16);
+            doc.text('Aylık Ödeme Planı', 20, finalY);
+            
+            const monthlyData = state.payments.map((payment, index) => [
+                payment.month,
+                formatCurrency(payment.total),
+                payment.expenses.length
+            ]);
+            
+            doc.autoTable({
+                startY: finalY + 10,
+                head: [['Ay', 'Toplam Ödeme', 'Harcama Sayısı']],
+                body: monthlyData,
+                theme: 'grid',
+                styles: { fontSize: 10 },
+                headStyles: { fillColor: [46, 204, 113] }
+            });
+            
+            // PDF'i indir
+            doc.save(`Taksitify_Rapor_${state.currentCard.name}_${new Date().toISOString().slice(0, 10)}.pdf`);
+            
+            debugLog('PDF raporu oluşturuldu ve indirildi');
+        }
+        
+        // Excel raporu oluştur
+        function generateExcelReport() {
+            if (!state.currentCard) {
+                alert('Lütfen önce bir kart seçin.');
+                return;
+            }
+            
+            const cardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
+            
+            if (cardExpenses.length === 0) {
+                alert('Rapor oluşturmak için harcama ekleyin.');
+                return;
+            }
+            
+            // Excel çalışma kitabı oluştur
+            const wb = XLSX.utils.book_new();
+            wb.Props = {
+                Title: "Taksitify Taksit Raporu",
+                Subject: "Taksit Hesaplama Raporu",
+                Author: "Taksitify",
+                CreatedDate: new Date()
+            };
+            
+            // Harcama detayları sayfası
+            const expenseData = [
+                ['Harcama Adı', 'Tutar', 'Taksit Sayısı', 'Toplam Tutar'],
+                ...cardExpenses.map(expense => [
+                    expense.name,
+                    expense.amount,
+                    expense.installmentCount,
+                    expense.totalAmount
+                ])
+            ];
+            
+            const expenseSheet = XLSX.utils.aoa_to_sheet(expenseData);
+            XLSX.utils.book_append_sheet(wb, expenseSheet, "Harcama Detayları");
+            
+            // Aylık ödemeler sayfası
+            const monthlyData = [
+                ['Ay', 'Toplam Ödeme', 'Harcama Sayısı'],
+                ...state.payments.map(payment => [
+                    payment.month,
+                    payment.total,
+                    payment.expenses.length
+                ])
+            ];
+            
+            const monthlySheet = XLSX.utils.aoa_to_sheet(monthlyData);
+            XLSX.utils.book_append_sheet(wb, monthlySheet, "Aylık Ödemeler");
+            
+            // Özet sayfası
+            const totalExpenses = cardExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+            const totalInstallments = cardExpenses.reduce((sum, expense) => sum + expense.installmentCount, 0);
+            
+            const summaryData = [
+                ['Kart Bilgileri', ''],
+                ['Kart Adı', state.currentCard.name],
+                ['Limit', state.currentCard.limit],
+                ['Kalan Limit', state.currentCard.availableLimit],
+                ['Toplam Borç', state.currentCard.totalDebt],
+                ['Asgari Ödeme', state.currentCard.minPayment],
+                ['', ''],
+                ['Özet Bilgiler', ''],
+                ['Toplam Harcama', totalExpenses],
+                ['Toplam Taksit', totalInstallments],
+                ['Harcama Sayısı', cardExpenses.length],
+                ['', ''],
+                ['Rapor Tarihi', new Date().toLocaleDateString('tr-TR')]
+            ];
+            
+            const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+            XLSX.utils.book_append_sheet(wb, summarySheet, "Özet");
+            
+            // Excel dosyasını indir
+            XLSX.writeFile(wb, `Taksitify_Rapor_${state.currentCard.name}_${new Date().toISOString().slice(0, 10)}.xlsx`);
+            
+            debugLog('Excel raporu oluşturuldu ve indirildi');
         }
     </script>
 </body>
