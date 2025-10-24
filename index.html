@@ -73,6 +73,35 @@
             color: var(--primary-color);
         }
         
+        .user-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .user-email {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+        
+        .logout-btn {
+            background: rgba(231, 76, 60, 0.2);
+            color: white;
+            border: 1px solid rgba(231, 76, 60, 0.5);
+            border-radius: var(--border-radius);
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            width: 100%;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.4);
+        }
+        
         .finance-tools {
             margin-top: 30px;
         }
@@ -332,6 +361,17 @@
             box-shadow: 0 6px 8px rgba(46, 204, 113, 0.3);
         }
         
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #e67e22 100%);
+            color: white;
+            box-shadow: 0 4px 6px rgba(243, 156, 18, 0.2);
+        }
+        
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(243, 156, 18, 0.3);
+        }
+        
         .expense-cards {
             display: flex;
             flex-wrap: wrap;
@@ -406,6 +446,14 @@
         .expense-details .value {
             color: var(--dark-color);
             font-weight: bold;
+        }
+        
+        .card-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
         }
         
         .months-section {
@@ -1500,6 +1548,117 @@
             font-size: 0.9rem;
         }
 
+        /* Kullanıcı Giriş Modalı */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .auth-modal.active {
+            display: flex;
+        }
+        
+        .auth-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            width: 420px;
+            max-width: 90%;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-modal.active .auth-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+        
+        .auth-tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .auth-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .auth-switch {
+            color: var(--primary-color);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        .auth-switch:hover {
+            color: #2980b9;
+        }
+        
+        .continue-without-login {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .continue-btn {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #e67e22 100%);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px rgba(243, 156, 18, 0.2);
+            width: 100%;
+        }
+        
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(243, 156, 18, 0.3);
+        }
+
         /* Responsive Tasarım */
         @media (max-width: 1200px) {
             .calculator-grid {
@@ -1560,11 +1719,78 @@
     </style>
 </head>
 <body>
+    <!-- Kullanıcı Giriş Modalı -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-content">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Giriş Yap</button>
+                <button class="auth-tab" data-tab="register">Kayıt Ol</button>
+            </div>
+            
+            <!-- Giriş Formu -->
+            <div class="auth-form active" id="login-form">
+                <div class="form-group">
+                    <label for="loginEmail"><i class="fas fa-envelope"></i> E-posta</label>
+                    <input type="email" id="loginEmail" class="form-control" placeholder="E-posta adresinizi girin">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword"><i class="fas fa-lock"></i> Şifre</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Şifrenizi girin">
+                </div>
+                <button class="btn btn-primary" id="loginBtn" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> Giriş Yap
+                </button>
+                <div class="auth-footer">
+                    Hesabınız yok mu? <span class="auth-switch" data-tab="register">Kayıt Olun</span>
+                </div>
+            </div>
+            
+            <!-- Kayıt Formu -->
+            <div class="auth-form" id="register-form">
+                <div class="form-group">
+                    <label for="registerEmail"><i class="fas fa-envelope"></i> E-posta</label>
+                    <input type="email" id="registerEmail" class="form-control" placeholder="E-posta adresinizi girin">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword"><i class="fas fa-lock"></i> Şifre</label>
+                    <input type="password" id="registerPassword" class="form-control" placeholder="Şifrenizi girin">
+                </div>
+                <div class="form-group">
+                    <label for="registerPasswordConfirm"><i class="fas fa-lock"></i> Şifre Tekrar</label>
+                    <input type="password" id="registerPasswordConfirm" class="form-control" placeholder="Şifrenizi tekrar girin">
+                </div>
+                <button class="btn btn-success" id="registerBtn" style="width: 100%;">
+                    <i class="fas fa-user-plus"></i> Kayıt Ol
+                </button>
+                <div class="auth-footer">
+                    Zaten hesabınız var mı? <span class="auth-switch" data-tab="login">Giriş Yapın</span>
+                </div>
+            </div>
+            
+            <!-- Giriş Yapmadan Devam Et -->
+            <div class="continue-without-login">
+                <button class="continue-btn" id="continueWithoutLoginBtn">
+                    <i class="fas fa-play-circle"></i> Giriş Yapmadan Devam Et
+                </button>
+                <div class="auth-footer" style="margin-top: 10px;">
+                    <small>Not: Giriş yapmadan devam ederseniz verileriniz sadece bu oturumda saklanacaktır.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <!-- Sol Menü - Finansal Araçlar -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <h2><i class="fas fa-chart-line"></i> Taksitify</h2>
+            </div>
+            
+            <div class="user-info" id="userInfo" style="display: none;">
+                <div class="user-email" id="userEmail"></div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+                </button>
             </div>
             
             <div class="finance-tools">
@@ -1721,6 +1947,7 @@
                             <thead>
                                 <tr>
                                     <th>Harcama Adı</th>
+                                    <th>Kart</th>
                                     <th>Tutar</th>
                                     <th>Taksit Sayısı</th>
                                     <th>Toplam</th>
@@ -2217,7 +2444,8 @@
             currentTool: 'taksit',
             currentMonthIndex: 0,
             monthsPerView: 6,
-            asLimit: 25000
+            asLimit: 25000,
+            user: null
         };
 
         // Bütçe veri yapısı
@@ -2241,9 +2469,16 @@
             "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"
         ];
 
+        // Kart renkleri
+        const cardColors = [
+            '#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6',
+            '#1abc9c', '#d35400', '#c0392b', '#16a085', '#8e44ad'
+        ];
+
         // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', function() {
             debugLog('Taksitify başlatılıyor...');
+            checkUserAuth();
             initializeApp();
             setupEventListeners();
             renderInflationChart();
@@ -2262,6 +2497,115 @@
             // İlk raporu oluştur
             updateTaksitReport();
         });
+
+        // Kullanıcı kimlik doğrulama kontrolü
+        function checkUserAuth() {
+            const userData = localStorage.getItem('taksitify_user');
+            if (userData) {
+                state.user = JSON.parse(userData);
+                showUserInfo();
+                loadUserData();
+            } else {
+                // Giriş yapmadan devam etme durumu kontrolü
+                const guestMode = localStorage.getItem('taksitify_guest_mode');
+                if (guestMode === 'true') {
+                    state.user = { email: 'Misafir Kullanıcı', guest: true };
+                    showUserInfo();
+                    loadUserData();
+                } else {
+                    showAuthModal();
+                }
+            }
+        }
+
+        // Kullanıcı bilgilerini göster
+        function showUserInfo() {
+            const userInfo = document.getElementById('userInfo');
+            const userEmail = document.getElementById('userEmail');
+            
+            if (state.user) {
+                userInfo.style.display = 'block';
+                if (state.user.guest) {
+                    userEmail.textContent = 'Misafir Modu';
+                } else {
+                    userEmail.textContent = state.user.email;
+                }
+            } else {
+                userInfo.style.display = 'none';
+            }
+        }
+
+        // Kullanıcı verilerini yükle
+        function loadUserData() {
+            let userCards, userExpenses, userBudget;
+            
+            if (state.user && state.user.guest) {
+                // Misafir kullanıcı için geçici veriler
+                userCards = localStorage.getItem('taksitify_guest_cards');
+                userExpenses = localStorage.getItem('taksitify_guest_expenses');
+                userBudget = localStorage.getItem('taksitify_guest_budget');
+            } else if (state.user) {
+                // Kayıtlı kullanıcı için kullanıcıya özel veriler
+                userCards = localStorage.getItem(`taksitify_cards_${state.user.email}`);
+                userExpenses = localStorage.getItem(`taksitify_expenses_${state.user.email}`);
+                userBudget = localStorage.getItem(`taksitify_budget_${state.user.email}`);
+            }
+            
+            if (userCards) {
+                state.cards = JSON.parse(userCards);
+            }
+            
+            if (userExpenses) {
+                state.expenses = JSON.parse(userExpenses);
+            }
+            
+            if (userBudget) {
+                const budgetData = JSON.parse(userBudget);
+                budgetState.incomes = budgetData.incomes || [];
+                budgetState.expenses = budgetData.expenses || [];
+            }
+            
+            if (state.cards.length > 0) {
+                state.currentCard = state.cards[0];
+                state.asLimit = state.currentCard.asLimit;
+            }
+            
+            updateUI();
+            renderBudget();
+        }
+
+        // Kullanıcı verilerini kaydet
+        function saveUserData() {
+            if (!state.user) return;
+            
+            if (state.user.guest) {
+                // Misafir kullanıcı için geçici veriler
+                localStorage.setItem('taksitify_guest_cards', JSON.stringify(state.cards));
+                localStorage.setItem('taksitify_guest_expenses', JSON.stringify(state.expenses));
+                localStorage.setItem('taksitify_guest_budget', JSON.stringify({
+                    incomes: budgetState.incomes,
+                    expenses: budgetState.expenses
+                }));
+            } else {
+                // Kayıtlı kullanıcı için kullanıcıya özel veriler
+                localStorage.setItem(`taksitify_cards_${state.user.email}`, JSON.stringify(state.cards));
+                localStorage.setItem(`taksitify_expenses_${state.user.email}`, JSON.stringify(state.expenses));
+                localStorage.setItem(`taksitify_budget_${state.user.email}`, JSON.stringify({
+                    incomes: budgetState.incomes,
+                    expenses: budgetState.expenses
+                }));
+            }
+        }
+
+        // Giriş modalını göster
+        function showAuthModal() {
+            document.getElementById('authModal').classList.add('active');
+        }
+
+        // Giriş modalını gizle
+        function hideAuthModal() {
+            document.getElementById('authModal').classList.remove('active');
+        }
 
         // Stopaj toggle ayarları
         function setupStopajToggle() {
@@ -2289,7 +2633,147 @@
             // Tool seçimini ayarla
             setupToolSelection();
             
+            // Kullanıcı giriş sistemini ayarla
+            setupAuthSystem();
+            
             debugLog('Taksitify hazır!');
+        }
+
+        // Kullanıcı giriş sistemini kur
+        function setupAuthSystem() {
+            // Giriş/Kayıt tab'larını ayarla
+            const authTabs = document.querySelectorAll('.auth-tab');
+            authTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.dataset.tab;
+                    
+                    // Aktif tab'ı değiştir
+                    authTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // İlgili formu göster
+                    document.querySelectorAll('.auth-form').forEach(form => {
+                        form.classList.remove('active');
+                    });
+                    document.getElementById(`${tabName}-form`).classList.add('active');
+                });
+            });
+            
+            // Form değiştirme bağlantılarını ayarla
+            const authSwitches = document.querySelectorAll('.auth-switch');
+            authSwitches.forEach(switchEl => {
+                switchEl.addEventListener('click', function() {
+                    const tabName = this.dataset.tab;
+                    
+                    // Aktif tab'ı değiştir
+                    authTabs.forEach(t => t.classList.remove('active'));
+                    document.querySelector(`.auth-tab[data-tab="${tabName}"]`).classList.add('active');
+                    
+                    // İlgili formu göster
+                    document.querySelectorAll('.auth-form').forEach(form => {
+                        form.classList.remove('active');
+                    });
+                    document.getElementById(`${tabName}-form`).classList.add('active');
+                });
+            });
+            
+            // Giriş butonu
+            document.getElementById('loginBtn').addEventListener('click', function() {
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                
+                if (!email || !password) {
+                    alert('Lütfen e-posta ve şifre girin.');
+                    return;
+                }
+                
+                // Basit doğrulama (gerçek uygulamada sunucu tarafı doğrulama gerekir)
+                const users = JSON.parse(localStorage.getItem('taksitify_users') || '[]');
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    state.user = { email: user.email };
+                    localStorage.setItem('taksitify_user', JSON.stringify(state.user));
+                    // Misafir modunu temizle
+                    localStorage.removeItem('taksitify_guest_mode');
+                    showUserInfo();
+                    hideAuthModal();
+                    loadUserData();
+                    debugLog(`Kullanıcı giriş yaptı: ${email}`);
+                } else {
+                    alert('E-posta veya şifre hatalı.');
+                }
+            });
+            
+            // Kayıt butonu
+            document.getElementById('registerBtn').addEventListener('click', function() {
+                const email = document.getElementById('registerEmail').value.trim();
+                const password = document.getElementById('registerPassword').value;
+                const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+                
+                if (!email || !password || !passwordConfirm) {
+                    alert('Lütfen tüm alanları doldurun.');
+                    return;
+                }
+                
+                if (password !== passwordConfirm) {
+                    alert('Şifreler eşleşmiyor.');
+                    return;
+                }
+                
+                // Kullanıcı kaydı
+                const users = JSON.parse(localStorage.getItem('taksitify_users') || '[]');
+                
+                // E-posta kontrolü
+                if (users.find(u => u.email === email)) {
+                    alert('Bu e-posta adresi zaten kayıtlı.');
+                    return;
+                }
+                
+                // Yeni kullanıcı ekle
+                users.push({ email, password });
+                localStorage.setItem('taksitify_users', JSON.stringify(users));
+                
+                // Otomatik giriş yap
+                state.user = { email };
+                localStorage.setItem('taksitify_user', JSON.stringify(state.user));
+                // Misafir modunu temizle
+                localStorage.removeItem('taksitify_guest_mode');
+                showUserInfo();
+                hideAuthModal();
+                debugLog(`Yeni kullanıcı kaydedildi: ${email}`);
+            });
+            
+            // Çıkış butonu
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                    state.user = null;
+                    localStorage.removeItem('taksitify_user');
+                    // Misafir modunu temizle
+                    localStorage.removeItem('taksitify_guest_mode');
+                    state.cards = [];
+                    state.expenses = [];
+                    budgetState.incomes = [];
+                    budgetState.expenses = [];
+                    state.currentCard = null;
+                    
+                    showUserInfo();
+                    showAuthModal();
+                    updateUI();
+                    renderBudget();
+                    debugLog('Kullanıcı çıkış yaptı');
+                }
+            });
+            
+            // Giriş yapmadan devam et butonu
+            document.getElementById('continueWithoutLoginBtn').addEventListener('click', function() {
+                state.user = { email: 'Misafir Kullanıcı', guest: true };
+                localStorage.setItem('taksitify_guest_mode', 'true');
+                showUserInfo();
+                hideAuthModal();
+                loadUserData();
+                debugLog('Misafir modunda devam ediliyor');
+            });
         }
 
         // Event listener'ları kur
@@ -2459,6 +2943,9 @@
             // UI'ı güncelle
             renderBudget();
             
+            // Verileri kaydet
+            saveUserData();
+            
             debugLog(`${type === 'income' ? 'Gelir' : 'Gider'} eklendi: ${name} - ${amount} TL`);
         }
 
@@ -2560,6 +3047,7 @@
             if (confirm('Bu kalemi silmek istediğinizden emin misiniz?')) {
                 budgetState[`${type}s`] = budgetState[`${type}s`].filter(item => item.id !== id);
                 renderBudget();
+                saveUserData();
                 debugLog(`${type === 'income' ? 'Gelir' : 'Gider'} silindi: ${id}`);
             }
         }
@@ -3173,7 +3661,8 @@
                 limit: cardLimit,
                 availableLimit: cardLimit,
                 totalDebt: 0,
-                minPayment: 0
+                minPayment: 0,
+                color: cardColors[state.cards.length % cardColors.length]
             };
             
             // State'e ekle
@@ -3185,6 +3674,9 @@
             
             // UI'ı güncelle
             updateUI();
+            
+            // Verileri kaydet
+            saveUserData();
             
             // Modal'ı kapat
             closeAddCardModal();
@@ -3311,6 +3803,9 @@
                 // UI'ı güncelle
                 updateUI();
                 
+                // Verileri kaydet
+                saveUserData();
+                
                 debugLog(`Kart silindi: ${cardId}`);
             }
         }
@@ -3347,6 +3842,9 @@
             expenseCards.innerHTML = '';
             
             cardExpenses.forEach(expense => {
+                const card = state.cards.find(c => c.id === expense.cardId);
+                const cardColor = card ? card.color : '#3498db';
+                
                 const expenseCard = document.createElement('div');
                 expenseCard.className = 'expense-card';
                 expenseCard.innerHTML = `
@@ -3357,6 +3855,13 @@
                         </button>
                     </div>
                     <div class="expense-details">
+                        <p>
+                            <span class="label">Kart:</span>
+                            <span class="value">
+                                <span class="card-indicator" style="background-color: ${cardColor};"></span>
+                                ${card ? card.name : 'Bilinmeyen Kart'}
+                            </span>
+                        </p>
                         <p>
                             <span class="label">Tutar:</span>
                             <span class="value">${formatCurrency(expense.amount)}</span>
@@ -3408,14 +3913,17 @@
                 return;
             }
             
-            // Yeni harcama oluştur - Aylık ödeme artık hesaplanmıyor
+            // Toplam tutarı hesapla: tutar * taksit sayısı
+            const totalAmount = expenseAmount * installmentCount;
+            
+            // Yeni harcama oluştur
             const newExpense = {
                 id: Date.now().toString(),
                 cardId: state.currentCard.id,
                 name: expenseName,
                 amount: expenseAmount,
                 installmentCount: installmentCount,
-                totalAmount: expenseAmount, // Toplam tutar harcama tutarına eşit
+                totalAmount: totalAmount, // Toplam tutar = tutar * taksit sayısı
                 date: new Date()
             };
             
@@ -3428,7 +3936,10 @@
             // UI'ı güncelle
             updateUI();
             
-            debugLog(`Harcama eklendi: ${expenseName} - ${expenseAmount} TL - ${installmentCount} taksit`);
+            // Verileri kaydet
+            saveUserData();
+            
+            debugLog(`Harcama eklendi: ${expenseName} - ${expenseAmount} TL - ${installmentCount} taksit - Toplam: ${totalAmount} TL`);
         }
 
         // Harcama sil
@@ -3443,6 +3954,9 @@
                 // UI'ı güncelle
                 updateUI();
                 
+                // Verileri kaydet
+                saveUserData();
+                
                 debugLog(`Harcama silindi: ${expenseId}`);
             }
         }
@@ -3454,8 +3968,8 @@
             // Aktif karta ait harcamaları filtrele
             const cardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
             
-            // Toplam borç hesapla
-            const totalDebt = cardExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+            // Toplam borç hesapla (tüm harcamaların toplam tutarlarının toplamı)
+            const totalDebt = cardExpenses.reduce((sum, expense) => sum + expense.totalAmount, 0);
             
             // Kullanılabilir limit hesapla
             const availableLimit = state.currentCard.limit - totalDebt;
@@ -3474,11 +3988,6 @@
 
         // Aylık ödemeleri hesapla
         function calculateMonthlyPayments() {
-            if (!state.currentCard) return;
-            
-            // Aktif karta ait harcamaları filtrele
-            const cardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
-            
             // Ayları oluştur
             generateMonths();
             
@@ -3489,8 +3998,12 @@
                 expenses: []
             }));
             
-            // Her harcamayı aylara dağıt - TAM TUTAR OLARAK
-            cardExpenses.forEach(expense => {
+            // Tüm kartlardaki tüm harcamaları aylara dağıt - TAM TUTAR OLARAK
+            state.expenses.forEach(expense => {
+                const card = state.cards.find(c => c.id === expense.cardId);
+                const cardName = card ? card.name : 'Bilinmeyen Kart';
+                const cardColor = card ? card.color : '#3498db';
+                
                 for (let i = 0; i < expense.installmentCount; i++) {
                     const paymentMonthIndex = i;
                     if (paymentMonthIndex < state.payments.length) {
@@ -3498,7 +4011,9 @@
                         state.payments[paymentMonthIndex].total += expense.amount;
                         state.payments[paymentMonthIndex].expenses.push({
                             name: expense.name,
-                            amount: expense.amount
+                            amount: expense.amount,
+                            cardName: cardName,
+                            cardColor: cardColor
                         });
                     }
                 }
@@ -3523,7 +4038,7 @@
             const monthsContainer = document.getElementById('monthsContainer');
             const monthRange = document.getElementById('monthRange');
             
-            if (!state.currentCard || state.expenses.length === 0) {
+            if (state.expenses.length === 0) {
                 monthsContainer.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-calendar-times"></i>
@@ -3554,8 +4069,14 @@
                         ${monthData.expenses.map(expense => `
                             <div class="expense-item">
                                 <div class="expense-item-header">
-                                    <div class="expense-name">${expense.name}</div>
+                                    <div class="expense-name">
+                                        <span class="card-indicator" style="background-color: ${expense.cardColor};"></span>
+                                        ${expense.name}
+                                    </div>
                                     <div class="expense-amount">${formatCurrency(expense.amount)}</div>
+                                </div>
+                                <div style="font-size: 0.8rem; color: #777; margin-top: 5px;">
+                                    ${expense.cardName}
                                 </div>
                             </div>
                         `).join('')}
@@ -3569,23 +4090,18 @@
 
         // Taksit raporunu güncelle
         function updateTaksitReport() {
-            if (!state.currentCard) return;
-            
-            // Aktif karta ait harcamaları filtrele
-            const cardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
-            
             // Rapor özetini güncelle
-            updateReportSummary(cardExpenses);
+            updateReportSummary();
             
             // Rapor tablosunu güncelle
-            updateReportTable(cardExpenses);
+            updateReportTable();
         }
         
         // Rapor özetini güncelle
-        function updateReportSummary(expenses) {
+        function updateReportSummary() {
             const summaryContainer = document.getElementById('taksitReportSummary');
             
-            if (expenses.length === 0) {
+            if (state.expenses.length === 0) {
                 summaryContainer.innerHTML = `
                     <div class="empty-state" style="width: 100%;">
                         <i class="fas fa-receipt"></i>
@@ -3597,8 +4113,9 @@
             }
             
             // Toplam hesaplamalar
-            const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-            const totalInstallments = expenses.reduce((sum, expense) => sum + expense.installmentCount, 0);
+            const totalExpenses = state.expenses.reduce((sum, expense) => sum + expense.totalAmount, 0);
+            const totalInstallments = state.expenses.reduce((sum, expense) => sum + expense.installmentCount, 0);
+            const totalCards = state.cards.length;
             
             summaryContainer.innerHTML = `
                 <div class="report-summary-item">
@@ -3611,19 +4128,23 @@
                 </div>
                 <div class="report-summary-item">
                     <div class="report-summary-label">Toplam Harcama Sayısı</div>
-                    <div class="report-summary-value">${expenses.length}</div>
+                    <div class="report-summary-value">${state.expenses.length}</div>
+                </div>
+                <div class="report-summary-item">
+                    <div class="report-summary-label">Kart Sayısı</div>
+                    <div class="report-summary-value">${totalCards}</div>
                 </div>
             `;
         }
         
         // Rapor tablosunu güncelle
-        function updateReportTable(expenses) {
+        function updateReportTable() {
             const tableBody = document.querySelector('#taksitReportTable tbody');
             
-            if (expenses.length === 0) {
+            if (state.expenses.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="4" style="text-align: center; padding: 20px;">
+                        <td colspan="5" style="text-align: center; padding: 20px;">
                             <i class="fas fa-info-circle"></i> Henüz harcama eklenmemiş
                         </td>
                     </tr>
@@ -3633,10 +4154,18 @@
             
             tableBody.innerHTML = '';
             
-            expenses.forEach(expense => {
+            state.expenses.forEach(expense => {
+                const card = state.cards.find(c => c.id === expense.cardId);
+                const cardName = card ? card.name : 'Bilinmeyen Kart';
+                const cardColor = card ? card.color : '#3498db';
+                
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${expense.name}</td>
+                    <td>
+                        <span class="card-indicator" style="background-color: ${cardColor};"></span>
+                        ${cardName}
+                    </td>
                     <td>${formatCurrency(expense.amount)}</td>
                     <td>${expense.installmentCount} ay</td>
                     <td>${formatCurrency(expense.totalAmount)}</td>
@@ -3647,14 +4176,7 @@
         
         // PDF raporu oluştur
         function generatePdfReport() {
-            if (!state.currentCard) {
-                alert('Lütfen önce bir kart seçin.');
-                return;
-            }
-            
-            const cardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
-            
-            if (cardExpenses.length === 0) {
+            if (state.expenses.length === 0) {
                 alert('Rapor oluşturmak için harcama ekleyin.');
                 return;
             }
@@ -3673,37 +4195,45 @@
             doc.setTextColor(100, 100, 100);
             doc.text(`Oluşturulma Tarihi: ${new Date().toLocaleDateString('tr-TR')}`, 20, 45);
             
-            // Kart bilgileri
-            doc.setFontSize(14);
-            doc.setTextColor(44, 62, 80);
-            doc.text(`Kart: ${state.currentCard.name}`, 20, 65);
-            doc.text(`Limit: ${formatCurrency(state.currentCard.limit)}`, 20, 80);
-            doc.text(`Kalan Limit: ${formatCurrency(state.currentCard.availableLimit)}`, 20, 95);
+            // Kullanıcı bilgisi
+            if (state.user) {
+                if (state.user.guest) {
+                    doc.text(`Kullanıcı: Misafir Modu`, 20, 60);
+                } else {
+                    doc.text(`Kullanıcı: ${state.user.email}`, 20, 60);
+                }
+            }
             
             // Özet bilgiler
-            const totalExpenses = cardExpenses.reduce((sum, expense) => sum + expense.amount, 0);
-            const totalInstallments = cardExpenses.reduce((sum, expense) => sum + expense.installmentCount, 0);
+            const totalExpenses = state.expenses.reduce((sum, expense) => sum + expense.totalAmount, 0);
+            const totalInstallments = state.expenses.reduce((sum, expense) => sum + expense.installmentCount, 0);
             
-            doc.text(`Toplam Harcama: ${formatCurrency(totalExpenses)}`, 120, 65);
-            doc.text(`Toplam Taksit: ${totalInstallments}`, 120, 80);
-            doc.text(`Asgari Ödeme: ${formatCurrency(state.currentCard.minPayment)}`, 120, 95);
+            doc.text(`Toplam Harcama: ${formatCurrency(totalExpenses)}`, 120, 45);
+            doc.text(`Toplam Taksit: ${totalInstallments}`, 120, 60);
+            doc.text(`Kart Sayısı: ${state.cards.length}`, 120, 75);
             
             // Tablo başlığı
             doc.setFontSize(16);
-            doc.text('Harcama Detayları', 20, 120);
+            doc.text('Harcama Detayları', 20, 90);
             
             // Tablo verileri
-            const tableData = cardExpenses.map(expense => [
-                expense.name,
-                formatCurrency(expense.amount),
-                `${expense.installmentCount} ay`,
-                formatCurrency(expense.totalAmount)
-            ]);
+            const tableData = state.expenses.map(expense => {
+                const card = state.cards.find(c => c.id === expense.cardId);
+                const cardName = card ? card.name : 'Bilinmeyen Kart';
+                
+                return [
+                    expense.name,
+                    cardName,
+                    formatCurrency(expense.amount),
+                    `${expense.installmentCount} ay`,
+                    formatCurrency(expense.totalAmount)
+                ];
+            });
             
             // Tablo oluştur
             doc.autoTable({
-                startY: 130,
-                head: [['Harcama Adı', 'Tutar', 'Taksit', 'Toplam']],
+                startY: 100,
+                head: [['Harcama Adı', 'Kart', 'Tutar', 'Taksit', 'Toplam']],
                 body: tableData,
                 theme: 'grid',
                 styles: { fontSize: 10 },
@@ -3731,21 +4261,18 @@
             });
             
             // PDF'i indir
-            doc.save(`Taksitify_Rapor_${state.currentCard.name}_${new Date().toISOString().slice(0, 10)}.pdf`);
+            const fileName = state.user ? 
+                `Taksitify_Rapor_${state.user.guest ? 'Misafir' : state.user.email}_${new Date().toISOString().slice(0, 10)}.pdf` :
+                `Taksitify_Rapor_${new Date().toISOString().slice(0, 10)}.pdf`;
+            
+            doc.save(fileName);
             
             debugLog('PDF raporu oluşturuldu ve indirildi');
         }
         
         // Excel raporu oluştur
         function generateExcelReport() {
-            if (!state.currentCard) {
-                alert('Lütfen önce bir kart seçin.');
-                return;
-            }
-            
-            const cardExpenses = state.expenses.filter(expense => expense.cardId === state.currentCard.id);
-            
-            if (cardExpenses.length === 0) {
+            if (state.expenses.length === 0) {
                 alert('Rapor oluşturmak için harcama ekleyin.');
                 return;
             }
@@ -3761,13 +4288,19 @@
             
             // Harcama detayları sayfası
             const expenseData = [
-                ['Harcama Adı', 'Tutar', 'Taksit Sayısı', 'Toplam Tutar'],
-                ...cardExpenses.map(expense => [
-                    expense.name,
-                    expense.amount,
-                    expense.installmentCount,
-                    expense.totalAmount
-                ])
+                ['Harcama Adı', 'Kart', 'Tutar', 'Taksit Sayısı', 'Toplam Tutar'],
+                ...state.expenses.map(expense => {
+                    const card = state.cards.find(c => c.id === expense.cardId);
+                    const cardName = card ? card.name : 'Bilinmeyen Kart';
+                    
+                    return [
+                        expense.name,
+                        cardName,
+                        expense.amount,
+                        expense.installmentCount,
+                        expense.totalAmount
+                    ];
+                })
             ];
             
             const expenseSheet = XLSX.utils.aoa_to_sheet(expenseData);
@@ -3787,30 +4320,38 @@
             XLSX.utils.book_append_sheet(wb, monthlySheet, "Aylık Ödemeler");
             
             // Özet sayfası
-            const totalExpenses = cardExpenses.reduce((sum, expense) => sum + expense.amount, 0);
-            const totalInstallments = cardExpenses.reduce((sum, expense) => sum + expense.installmentCount, 0);
+            const totalExpenses = state.expenses.reduce((sum, expense) => sum + expense.totalAmount, 0);
+            const totalInstallments = state.expenses.reduce((sum, expense) => sum + expense.installmentCount, 0);
             
             const summaryData = [
                 ['Kart Bilgileri', ''],
-                ['Kart Adı', state.currentCard.name],
-                ['Limit', state.currentCard.limit],
-                ['Kalan Limit', state.currentCard.availableLimit],
-                ['Toplam Borç', state.currentCard.totalDebt],
-                ['Asgari Ödeme', state.currentCard.minPayment],
+                ['Kart Sayısı', state.cards.length],
                 ['', ''],
                 ['Özet Bilgiler', ''],
                 ['Toplam Harcama', totalExpenses],
                 ['Toplam Taksit', totalInstallments],
-                ['Harcama Sayısı', cardExpenses.length],
+                ['Harcama Sayısı', state.expenses.length],
                 ['', ''],
                 ['Rapor Tarihi', new Date().toLocaleDateString('tr-TR')]
             ];
+            
+            if (state.user) {
+                if (state.user.guest) {
+                    summaryData.unshift(['Kullanıcı', 'Misafir Modu']);
+                } else {
+                    summaryData.unshift(['Kullanıcı', state.user.email]);
+                }
+            }
             
             const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
             XLSX.utils.book_append_sheet(wb, summarySheet, "Özet");
             
             // Excel dosyasını indir
-            XLSX.writeFile(wb, `Taksitify_Rapor_${state.currentCard.name}_${new Date().toISOString().slice(0, 10)}.xlsx`);
+            const fileName = state.user ? 
+                `Taksitify_Rapor_${state.user.guest ? 'Misafir' : state.user.email}_${new Date().toISOString().slice(0, 10)}.xlsx` :
+                `Taksitify_Rapor_${new Date().toISOString().slice(0, 10)}.xlsx`;
+            
+            XLSX.writeFile(wb, fileName);
             
             debugLog('Excel raporu oluşturuldu ve indirildi');
         }
