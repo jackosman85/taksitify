@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taksitify - Finansal Hesaplama ve Analiz Platformu</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -2425,15 +2422,6 @@
     </div>
 
     <script>
-        // DEBUG: Hata ayıklama için konsol çıktısı
-        function debugLog(message) {
-            console.log(`[Taksitify] ${message}`);
-            const debugInfo = document.getElementById('debugInfo');
-            if (debugInfo) {
-                debugInfo.textContent = `Durum: ${message}`;
-            }
-        }
-
         // Uygulama durumu
         const state = {
             cards: [],
@@ -2477,7 +2465,6 @@
 
         // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', function() {
-            debugLog('Taksitify başlatılıyor...');
             checkUserAuth();
             initializeApp();
             setupEventListeners();
@@ -2616,10 +2603,8 @@
                 stopajToggle.addEventListener('change', function() {
                     if (this.checked) {
                         stopajContent.classList.add('active');
-                        debugLog('Stopaj hesaplaması aktifleştirildi');
                     } else {
                         stopajContent.classList.remove('active');
-                        debugLog('Stopaj hesaplaması devre dışı bırakıldı');
                     }
                     calculateInvestmentReturn();
                 });
@@ -2628,15 +2613,11 @@
 
         // Uygulamayı başlat
         function initializeApp() {
-            debugLog('Özellikler yükleniyor...');
-            
             // Tool seçimini ayarla
             setupToolSelection();
             
             // Kullanıcı giriş sistemini ayarla
             setupAuthSystem();
-            
-            debugLog('Taksitify hazır!');
         }
 
         // Kullanıcı giriş sistemini kur
@@ -2699,7 +2680,6 @@
                     showUserInfo();
                     hideAuthModal();
                     loadUserData();
-                    debugLog(`Kullanıcı giriş yaptı: ${email}`);
                 } else {
                     alert('E-posta veya şifre hatalı.');
                 }
@@ -2741,7 +2721,6 @@
                 localStorage.removeItem('taksitify_guest_mode');
                 showUserInfo();
                 hideAuthModal();
-                debugLog(`Yeni kullanıcı kaydedildi: ${email}`);
             });
             
             // Çıkış butonu
@@ -2761,7 +2740,6 @@
                     showAuthModal();
                     updateUI();
                     renderBudget();
-                    debugLog('Kullanıcı çıkış yaptı');
                 }
             });
             
@@ -2772,17 +2750,13 @@
                 showUserInfo();
                 hideAuthModal();
                 loadUserData();
-                debugLog('Misafir modunda devam ediliyor');
             });
         }
 
         // Event listener'ları kur
         function setupEventListeners() {
-            debugLog('Event listenerlar kuruluyor...');
-            
             // Kart ekle butonu - Modal aç
             document.getElementById('addCardBtn').addEventListener('click', function() {
-                debugLog('Kart ekle butonuna tıklandı, modal açılıyor');
                 openAddCardModal();
             });
             
@@ -2792,7 +2766,6 @@
             
             // Kart ekleme onay butonu
             document.getElementById('confirmAddCardBtn').addEventListener('click', function() {
-                debugLog('Kart ekleme onay butonuna tıklandı');
                 confirmAddCard();
             });
             
@@ -2805,7 +2778,6 @@
             
             // Harcama ekle butonu
             document.getElementById('addExpenseBtn').addEventListener('click', function(e) {
-                debugLog('Harcama ekle butonuna tıklandı');
                 addExpense();
             });
             
@@ -2830,7 +2802,6 @@
                 if (!isNaN(newAsLimit) && newAsLimit > 0) {
                     state.asLimit = newAsLimit;
                     updateUI();
-                    debugLog(`As Limit güncellendi: ${state.asLimit} TL`);
                 } else {
                     alert('Lütfen geçerli bir As Limit değeri girin.');
                     document.getElementById('asLimitInput').value = state.asLimit;
@@ -2839,8 +2810,6 @@
             
             // Hızlı işlem butonlarını ayarla
             setupQuickActions();
-            
-            debugLog('Event listenerlar kuruldu');
         }
 
         // Getiri Hesaplama fonksiyonlarını kur
@@ -2857,8 +2826,6 @@
                 // İlk hesaplamayı yap
                 updateInflationRate();
                 calculateInvestmentReturn();
-                
-                debugLog('Getiri hesaplama fonksiyonları kuruldu');
             }
         }
 
@@ -2900,8 +2867,6 @@
             
             // Başlangıçta bütçeyi render et
             renderBudget();
-            
-            debugLog('Bütçe sayfası kuruldu');
         }
 
         // Bütçe kalemi ekle
@@ -2945,8 +2910,6 @@
             
             // Verileri kaydet
             saveUserData();
-            
-            debugLog(`${type === 'income' ? 'Gelir' : 'Gider'} eklendi: ${name} - ${amount} TL`);
         }
 
         // Bütçeyi render et
@@ -3048,7 +3011,6 @@
                 budgetState[`${type}s`] = budgetState[`${type}s`].filter(item => item.id !== id);
                 renderBudget();
                 saveUserData();
-                debugLog(`${type === 'income' ? 'Gelir' : 'Gider'} silindi: ${id}`);
             }
         }
 
@@ -3090,14 +3052,10 @@
             
             inflationRate.value = periodTotalInflation.toFixed(2);
             periodInflationInfo.textContent = inflationInfo;
-            
-            debugLog(`Enflasyon oranı güncellendi: ${periodTypeValue} - ${periodTotalInflation.toFixed(2)}%`);
         }
 
         // Getiri hesapla
         function calculateInvestmentReturn() {
-            debugLog('Getiri hesaplama başlatıldı');
-            
             const initialPrice = document.getElementById('initialPrice');
             const finalPrice = document.getElementById('finalPrice');
             const periodValue = document.getElementById('periodValue');
@@ -3163,8 +3121,6 @@
                     document.getElementById('stopajTutari').textContent = formatCurrency(stopajTutari);
                     document.getElementById('netGetiri').textContent = formatCurrency(netGetiri);
                 }
-                
-                debugLog(`Stopaj hesaplandı: Stopaj Tutarı: ${stopajTutari.toFixed(2)} TL, Net Getiri: ${netGetiri.toFixed(2)} TL`);
             } else {
                 const taxBreakdown = document.getElementById('taxBreakdown');
                 if (taxBreakdown) {
@@ -3196,14 +3152,10 @@
             
             // Grafikleri oluştur
             createReturnChart(initialPriceVal, finalPriceVal, realReturn, stopajToggleVal, stopajTutari, netGetiri);
-            
-            debugLog(`Getiri hesaplandı: Nominal Getiri: ${nominalReturn.toFixed(2)} TL, Reel Getiri: ${realReturn.toFixed(2)} TL`);
         }
 
         // Getiri grafiğini oluştur
         function createReturnChart(initialPrice, finalPrice, realReturn, stopajToggle, stopajTutari, netGetiri) {
-            debugLog('Getiri grafiği oluşturuluyor...');
-            
             const ctx = document.getElementById('returnChart');
             const legendContainer = document.getElementById('stackedLegend');
             
@@ -3440,8 +3392,6 @@
                     }
                 }
             });
-            
-            debugLog('Getiri grafiği oluşturuldu');
         }
 
         // Para formatı
@@ -3471,8 +3421,6 @@
 
         // Tool değiştir
         function switchTool(tool) {
-            debugLog(`Tool değiştiriliyor: ${tool}`);
-            
             // Tüm tool section'ları gizle
             document.querySelectorAll('.tool-section').forEach(section => {
                 section.classList.remove('active');
@@ -3499,8 +3447,6 @@
                     renderInflationChart();
                 }, 100);
             }
-            
-            debugLog(`Aktif tool: ${tool}`);
         }
 
         // Hızlı işlem butonlarını ayarla
@@ -3510,15 +3456,12 @@
                 btn.addEventListener('click', function() {
                     const amount = parseFloat(this.dataset.amount);
                     document.getElementById('expenseAmount').value = amount;
-                    debugLog(`Hızlı işlem: ${amount} TL seçildi`);
                 });
             });
         }
 
         // Enflasyon grafiğini render et
         function renderInflationChart() {
-            debugLog('Enflasyon grafiği oluşturuluyor...');
-            
             const ctx = document.getElementById('inflationChart');
             if (!ctx) return;
             
@@ -3611,20 +3554,16 @@
                     }
                 }
             });
-            
-            debugLog('Enflasyon grafiği oluşturuldu');
         }
 
         // Kart ekleme modal'ını aç
         function openAddCardModal() {
-            debugLog('Kart ekleme modalı açılıyor');
             document.getElementById('addCardModal').classList.add('active');
             document.getElementById('modalCardName').focus();
         }
 
         // Kart ekleme modal'ını kapat
         function closeAddCardModal() {
-            debugLog('Kart ekleme modalı kapatılıyor');
             document.getElementById('addCardModal').classList.remove('active');
             // Formu temizle
             document.getElementById('modalCardName').value = '';
@@ -3680,8 +3619,6 @@
             
             // Modal'ı kapat
             closeAddCardModal();
-            
-            debugLog(`Yeni kart eklendi: ${cardName}`);
         }
 
         // UI'ı güncelle
@@ -3780,7 +3717,6 @@
                 state.currentCard = card;
                 state.asLimit = card.asLimit;
                 updateUI();
-                debugLog(`Kart seçildi: ${card.name}`);
             }
         }
 
@@ -3805,8 +3741,6 @@
                 
                 // Verileri kaydet
                 saveUserData();
-                
-                debugLog(`Kart silindi: ${cardId}`);
             }
         }
 
@@ -3938,8 +3872,6 @@
             
             // Verileri kaydet
             saveUserData();
-            
-            debugLog(`Harcama eklendi: ${expenseName} - ${expenseAmount} TL - ${installmentCount} taksit - Toplam: ${totalAmount} TL`);
         }
 
         // Harcama sil
@@ -3956,8 +3888,6 @@
                 
                 // Verileri kaydet
                 saveUserData();
-                
-                debugLog(`Harcama silindi: ${expenseId}`);
             }
         }
 
@@ -4181,93 +4111,7 @@
                 return;
             }
             
-            // PDF oluştur
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // Başlık
-            doc.setFontSize(20);
-            doc.setTextColor(44, 62, 80);
-            doc.text('Taksitify - Taksit Raporu', 20, 30);
-            
-            // Tarih
-            doc.setFontSize(12);
-            doc.setTextColor(100, 100, 100);
-            doc.text(`Oluşturulma Tarihi: ${new Date().toLocaleDateString('tr-TR')}`, 20, 45);
-            
-            // Kullanıcı bilgisi
-            if (state.user) {
-                if (state.user.guest) {
-                    doc.text(`Kullanıcı: Misafir Modu`, 20, 60);
-                } else {
-                    doc.text(`Kullanıcı: ${state.user.email}`, 20, 60);
-                }
-            }
-            
-            // Özet bilgiler
-            const totalExpenses = state.expenses.reduce((sum, expense) => sum + expense.totalAmount, 0);
-            const totalInstallments = state.expenses.reduce((sum, expense) => sum + expense.installmentCount, 0);
-            
-            doc.text(`Toplam Harcama: ${formatCurrency(totalExpenses)}`, 120, 45);
-            doc.text(`Toplam Taksit: ${totalInstallments}`, 120, 60);
-            doc.text(`Kart Sayısı: ${state.cards.length}`, 120, 75);
-            
-            // Tablo başlığı
-            doc.setFontSize(16);
-            doc.text('Harcama Detayları', 20, 90);
-            
-            // Tablo verileri
-            const tableData = state.expenses.map(expense => {
-                const card = state.cards.find(c => c.id === expense.cardId);
-                const cardName = card ? card.name : 'Bilinmeyen Kart';
-                
-                return [
-                    expense.name,
-                    cardName,
-                    formatCurrency(expense.amount),
-                    `${expense.installmentCount} ay`,
-                    formatCurrency(expense.totalAmount)
-                ];
-            });
-            
-            // Tablo oluştur
-            doc.autoTable({
-                startY: 100,
-                head: [['Harcama Adı', 'Kart', 'Tutar', 'Taksit', 'Toplam']],
-                body: tableData,
-                theme: 'grid',
-                styles: { fontSize: 10 },
-                headStyles: { fillColor: [52, 152, 219] }
-            });
-            
-            // Aylık ödemeler tablosu
-            const finalY = doc.lastAutoTable.finalY + 20;
-            doc.setFontSize(16);
-            doc.text('Aylık Ödeme Planı', 20, finalY);
-            
-            const monthlyData = state.payments.map((payment, index) => [
-                payment.month,
-                formatCurrency(payment.total),
-                payment.expenses.length
-            ]);
-            
-            doc.autoTable({
-                startY: finalY + 10,
-                head: [['Ay', 'Toplam Ödeme', 'Harcama Sayısı']],
-                body: monthlyData,
-                theme: 'grid',
-                styles: { fontSize: 10 },
-                headStyles: { fillColor: [46, 204, 113] }
-            });
-            
-            // PDF'i indir
-            const fileName = state.user ? 
-                `Taksitify_Rapor_${state.user.guest ? 'Misafir' : state.user.email}_${new Date().toISOString().slice(0, 10)}.pdf` :
-                `Taksitify_Rapor_${new Date().toISOString().slice(0, 10)}.pdf`;
-            
-            doc.save(fileName);
-            
-            debugLog('PDF raporu oluşturuldu ve indirildi');
+            alert('PDF raporu oluşturma özelliği şu anda kullanılamıyor. Lütfen Excel raporunu kullanın.');
         }
         
         // Excel raporu oluştur
@@ -4277,83 +4121,7 @@
                 return;
             }
             
-            // Excel çalışma kitabı oluştur
-            const wb = XLSX.utils.book_new();
-            wb.Props = {
-                Title: "Taksitify Taksit Raporu",
-                Subject: "Taksit Hesaplama Raporu",
-                Author: "Taksitify",
-                CreatedDate: new Date()
-            };
-            
-            // Harcama detayları sayfası
-            const expenseData = [
-                ['Harcama Adı', 'Kart', 'Tutar', 'Taksit Sayısı', 'Toplam Tutar'],
-                ...state.expenses.map(expense => {
-                    const card = state.cards.find(c => c.id === expense.cardId);
-                    const cardName = card ? card.name : 'Bilinmeyen Kart';
-                    
-                    return [
-                        expense.name,
-                        cardName,
-                        expense.amount,
-                        expense.installmentCount,
-                        expense.totalAmount
-                    ];
-                })
-            ];
-            
-            const expenseSheet = XLSX.utils.aoa_to_sheet(expenseData);
-            XLSX.utils.book_append_sheet(wb, expenseSheet, "Harcama Detayları");
-            
-            // Aylık ödemeler sayfası
-            const monthlyData = [
-                ['Ay', 'Toplam Ödeme', 'Harcama Sayısı'],
-                ...state.payments.map(payment => [
-                    payment.month,
-                    payment.total,
-                    payment.expenses.length
-                ])
-            ];
-            
-            const monthlySheet = XLSX.utils.aoa_to_sheet(monthlyData);
-            XLSX.utils.book_append_sheet(wb, monthlySheet, "Aylık Ödemeler");
-            
-            // Özet sayfası
-            const totalExpenses = state.expenses.reduce((sum, expense) => sum + expense.totalAmount, 0);
-            const totalInstallments = state.expenses.reduce((sum, expense) => sum + expense.installmentCount, 0);
-            
-            const summaryData = [
-                ['Kart Bilgileri', ''],
-                ['Kart Sayısı', state.cards.length],
-                ['', ''],
-                ['Özet Bilgiler', ''],
-                ['Toplam Harcama', totalExpenses],
-                ['Toplam Taksit', totalInstallments],
-                ['Harcama Sayısı', state.expenses.length],
-                ['', ''],
-                ['Rapor Tarihi', new Date().toLocaleDateString('tr-TR')]
-            ];
-            
-            if (state.user) {
-                if (state.user.guest) {
-                    summaryData.unshift(['Kullanıcı', 'Misafir Modu']);
-                } else {
-                    summaryData.unshift(['Kullanıcı', state.user.email]);
-                }
-            }
-            
-            const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
-            XLSX.utils.book_append_sheet(wb, summarySheet, "Özet");
-            
-            // Excel dosyasını indir
-            const fileName = state.user ? 
-                `Taksitify_Rapor_${state.user.guest ? 'Misafir' : state.user.email}_${new Date().toISOString().slice(0, 10)}.xlsx` :
-                `Taksitify_Rapor_${new Date().toISOString().slice(0, 10)}.xlsx`;
-            
-            XLSX.writeFile(wb, fileName);
-            
-            debugLog('Excel raporu oluşturuldu ve indirildi');
+            alert('Excel raporu oluşturma özelliği şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.');
         }
     </script>
 </body>
